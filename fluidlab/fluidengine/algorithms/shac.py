@@ -10,6 +10,7 @@ import sys, os
 
 from torch.nn.utils.clip_grad import clip_grad_norm_
 from tqdm import tqdm
+from pathlib import Path
 
 project_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(project_dir)
@@ -18,7 +19,7 @@ import time
 import numpy as np
 import copy
 import torch
-from tensorboardX import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter
 import yaml
 from collections import OrderedDict
 import pycuda.autoinit
@@ -146,7 +147,9 @@ class SHACPolicy:
         self.value_loss = np.inf
 
     def _setup_logging(self):
-        self.log_dir = os.getenv('LOG_DIR', '/home/zhx/Project/RheoMars/logs/logs')
+        base_dir = os.path.dirname(os.path.dirname(project_dir))
+
+        self.log_dir = os.path.join(base_dir, 'logs')
         os.makedirs(self.log_dir, exist_ok=True)
         self.writer = SummaryWriter(os.path.join(self.log_dir, self.args.exp_name + '/log'))
 
@@ -488,7 +491,7 @@ class SHACPolicy:
     def save(self, filename=None):
         if filename is None:
             filename = 'best_policy'
-        torch.save([self.actor, self.critic, self.target_critic], os.path.join(self.log_dir, "{}.pt".format(filename)))
+        torch.save([self.actor, self.critic, self.target_critic], os.path.join(self.log_dir, self.args.exp_name + '/policy/' + "{}.pt".format(filename)))
 
     def close(self):
         self.writer.close()
