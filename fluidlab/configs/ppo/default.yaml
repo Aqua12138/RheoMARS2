@@ -1,0 +1,29 @@
+params:
+  env:
+    name: Transporting-v0
+    seed: 123
+  loss:
+    name: PPOLoss
+    target_file: Transporting_grid-v0.pkl
+    weight:
+      density: 1
+      sdf: 100
+      contact: 0
+      is_soft_contact: False
+
+  config:
+    deterministic_eval: True
+    action_scaling: False
+    ReplayBufferSize: 20000
+    max_epochs: 10
+    step_per_epochs: 50000
+    repeat_per_collect: 10
+    episode_per_test: 10
+    batch_size: 256
+    step_per_collect: 2000
+    num_envs: 2
+    lr: 0.0003
+    device: cuda:0
+
+
+

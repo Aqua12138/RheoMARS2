@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2h4zxS4uF2anIHQXzExZYottX2n" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;SHAC&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/zhx/Project/RheoMARS2/fluidlab/assets/targets&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fluidlab/assets/targets" />
+      <recent name="$PROJECT_DIR$/logs/logs/shac_pour3/policy" />
+      <recent name="$PROJECT_DIR$/fluidlab/assets/meshes/raw" />
+      <recent name="$PROJECT_DIR$/fluidlab/configs/shac" />
+      <recent name="$PROJECT_DIR$/fluidlab/envs" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fluidlab/fluidengine/losses/Adam" />
+      <recent name="$PROJECT_DIR$/fluidlab/configs/Adam" />
+      <recent name="$PROJECT_DIR$/fluidlab/fluidengine/algorithms" />
+      <recent name="$PROJECT_DIR$/fluidlab/envs" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.shac_trainer">
+    <configuration name="collect_data" type="PythonConfigurationType" factoryName="Python">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/fluidlab/bin/python" />
+      <option name="SDK_NAME" value="Python 3.7 (fluidlab)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GL --collect_data" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="debug" type="PythonConfigurationType" factoryName="Python">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/fluidlab/bin/python" />
+      <option name="SDK_NAME" value="Python 3.7 (fluidlab)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GGUI --debug --perc_type sensor" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="eval_pre_train" type="PythonConfigurationType" factoryName="Python">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/fluidlab/bin/python" />
+      <option name="SDK_NAME" value="Python 3.7 (fluidlab)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GL --rl eval --pre_train_model $PROJECT_DIR$/../ml-agents/ml-agents/mlagents/trainers/results/pour_3d3/Cup/Cup-1999900_policy_model.pth --perc_type sensor" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="gridsensor3d" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab/fluidengine/sensors" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor3d.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="load_model" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/load_model.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ppo_trainer" type="PythonConfigurationType" factoryName="Python">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/fluidlab/bin/python" />
+      <option name="SDK_NAME" value="Python 3.7 (fluidlab)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
+      <option name="PARAMETERS" value="--cfg_file configs/ppo/default.yaml --renderer_type GGUI --rl ppo --exp_name=ppo_test --perc_type sensor" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="record_target" type="PythonConfigurationType" factoryName="Python">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/fluidlab/bin/python" />
+      <option name="SDK_NAME" value="Python 3.7 (fluidlab)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
+      <option name="PARAMETERS" value="--cfg_file configs/exp_gathering.yaml --renderer_type GGUI --record --user_input" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="replay_policy" type="PythonConfigurationType" factoryName="Python">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/fluidlab/bin/python" />
+      <option name="SDK_NAME" value="Python 3.7 (fluidlab)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
+      <option name="PARAMETERS" value="--cfg_file configs/exp_gathering.yaml --renderer_type GGUI --replay_policy --path $PROJECT_DIR$/logs/policies/test/0040.pkl" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/fluidlab/bin/python" />
+      <option name="SDK_NAME" value="Python 3.7 (fluidlab)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
+      <option name="PARAMETERS" value="--cfg_file configs/adam/exp_gathering_easy.yaml --renderer_type GGUI --loss_type diff --exp_name=adam_transport" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="shac_trainer" type="PythonConfigurationType" factoryName="Python">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/fluidlab/bin/python" />
+      <option name="SDK_NAME" value="Python 3.7 (fluidlab)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GGUI --rl shac --exp_name=random_mu_pour2 --perc_type sensor" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="text" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RheoMars" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fluidlab" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/text.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.collect_data" />
+      <item itemvalue="Python.debug" />
+      <item itemvalue="Python.eval_pre_train" />
+      <item itemvalue="Python.gridsensor3d" />
+      <item itemvalue="Python.ppo_trainer" />
+      <item itemvalue="Python.record_target" />
+      <item itemvalue="Python.replay_policy" />
+      <item itemvalue="Python.run" />
+      <item itemvalue="Python.shac_trainer" />
+      <item itemvalue="Python.text" />
+      <item itemvalue="Python.load_model" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.text" />
+        <item itemvalue="Python.load_model" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="" />
+      <created>1716868383944</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716868383944</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/solver.py</url>
+          <line>83</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/policies.py</url>
+          <line>208</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor3d.py</url>
+          <line>41</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py</url>
+          <line>82</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/solver.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/solver.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/env/venvs.py</url>
+          <line>342</line>
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>90</line>
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/trainer/utils.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="84" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/trainer/base.py</url>
+          <line>236</line>
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/data/collector.py</url>
+          <line>292</line>
+          <option name="timeStamp" value="86" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/policy/base.py</url>
+          <line>170</line>
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>121</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>113</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/data/collector.py</url>
+          <line>264</line>
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/data/collector.py</url>
+          <line>270</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/data/collector.py</url>
+          <line>259</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/data/collector.py</url>
+          <line>277</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/policy/modelfree/pg.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/policy/modelfree/pg.py</url>
+          <line>56</line>
+          <option name="timeStamp" value="96" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>105</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>42</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>136</line>
+          <option name="timeStamp" value="160" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py</url>
+          <line>162</line>
+          <option name="timeStamp" value="172" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/agents/agent.py</url>
+          <line>108</line>
+          <option name="timeStamp" value="174" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>149</line>
+          <option name="timeStamp" value="195" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>131</line>
+          <option name="timeStamp" value="197" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/simulators/mpm_simulator.py</url>
+          <line>224</line>
+          <option name="timeStamp" value="203" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>187</line>
+          <option name="timeStamp" value="204" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>167</line>
+          <option name="timeStamp" value="205" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/utils/net/continuous.py</url>
+          <line>184</line>
+          <option name="timeStamp" value="208" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>188</line>
+          <option name="timeStamp" value="212" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/network/encoder.py</url>
+          <line>108</line>
+          <option name="timeStamp" value="213" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>182</line>
+          <option name="timeStamp" value="238" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>89</line>
+          <option name="timeStamp" value="245" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/policies.py</url>
+          <line>155</line>
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/solver.py</url>
+          <line>9</line>
+          <option name="timeStamp" value="251" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/run.py</url>
+          <line>79</line>
+          <option name="timeStamp" value="252" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/solver.py</url>
+          <line>16</line>
+          <option name="timeStamp" value="253" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/optim.py</url>
+          <line>30</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/simulators/mpm_simulator.py</url>
+          <line>154</line>
+          <option name="timeStamp" value="274" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/network/encoder.py</url>
+          <line>111</line>
+          <option name="timeStamp" value="297" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/torch/nn/modules/linear.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="300" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="304" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/PycharmProjects/fluids/FluidLab-5-7/ml-agents-release_19_docs/ml-agents/mlagents/trainers/poca/optimizer_torch.py</url>
+          <line>138</line>
+          <option name="timeStamp" value="308" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/PycharmProjects/fluids/FluidLab-5-7/ml-agents-release_19_docs/ml-agents/mlagents/trainers/torch/networks.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="314" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>194</line>
+          <option name="timeStamp" value="322" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/network/encoder.py</url>
+          <line>156</line>
+          <option name="timeStamp" value="328" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor3d.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="332" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/effectors/effector.py</url>
+          <line>146</line>
+          <option name="timeStamp" value="347" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>261</line>
+          <option name="timeStamp" value="350" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>182</line>
+          <option name="timeStamp" value="368" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>228</line>
+          <option name="timeStamp" value="373" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/effectors/effector.py</url>
+          <line>158</line>
+          <option name="timeStamp" value="374" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/simulators/mpm_simulator.py</url>
+          <line>433</line>
+          <option name="timeStamp" value="380" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="383" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/utils/mesh.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="384" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/effectors/rigid.py</url>
+          <line>20</line>
+          <option name="timeStamp" value="387" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/simulators/mpm_simulator.py</url>
+          <line>33</line>
+          <option name="timeStamp" value="392" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/mlagents/trainers/torch/networks.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="399" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/transporting_env.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="403" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/Adam/sdf_density_loss.py</url>
+          <line>102</line>
+          <option name="timeStamp" value="404" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="406" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/Adam/loss.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="410" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/pouring_env.py</url>
+          <line>157</line>
+          <option name="timeStamp" value="416" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/transporting_env.py</url>
+          <line>117</line>
+          <option name="timeStamp" value="418" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/pouring_env.py</url>
+          <line>122</line>
+          <option name="timeStamp" value="425" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/meshes/static.py</url>
+          <line>134</line>
+          <option name="timeStamp" value="428" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <condition expression="self.sim.cur_step_global==1280" language="Python" />
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py</url>
+          <line>345</line>
+          <option name="timeStamp" value="450" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <condition expression="self.sim.cur_step_global==1280" language="Python" />
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py</url>
+          <line>173</line>
+          <option name="timeStamp" value="451" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/simulators/mpm_simulator.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="453" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>249</line>
+          <option name="timeStamp" value="456" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/utils/dataset.py</url>
+          <line>15</line>
+          <option name="timeStamp" value="457" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>318</line>
+          <option name="timeStamp" value="458" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/utils/dataset.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="466" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/utils/dataset.py</url>
+          <line>43</line>
+          <option name="timeStamp" value="467" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>371</line>
+          <option name="timeStamp" value="468" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>260</line>
+          <option name="timeStamp" value="474" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>256</line>
+          <option name="timeStamp" value="475" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>274</line>
+          <option name="timeStamp" value="476" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>314</line>
+          <option name="timeStamp" value="478" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>315</line>
+          <option name="timeStamp" value="479" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>244</line>
+          <option name="timeStamp" value="480" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>379</line>
+          <option name="timeStamp" value="481" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>224</line>
+          <option name="timeStamp" value="482" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
+          <line>479</line>
+          <option name="timeStamp" value="485" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
