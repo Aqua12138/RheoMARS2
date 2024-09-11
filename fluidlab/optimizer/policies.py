@@ -63,9 +63,9 @@ class KeyboardPolicy_vxy_wz(KeyboardPolicy):
         if '9' in self.keys_activated:
             action_v[2] += self.linear_v_mag
         if 'x' in self.keys_activated:
-            action_v[5] -= self.angular_v_mag
+            action_v[3] -= self.angular_v_mag
         if 'z' in self.keys_activated:
-            action_v[5] += self.angular_v_mag
+            action_v[3] += self.angular_v_mag
         return action_v
 
 class KeyboardPolicy_wz(KeyboardPolicy):

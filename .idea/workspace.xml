@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/pour.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/pour.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/configs/agent_pouring.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/configs/agent_pouring.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/policies.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/policies.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,15 +37,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "SHAC",
-    "last_opened_file_path": "/home/zhx/Project/RheoMARS2/fluidlab/assets/targets",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;SHAC&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/zhx/Project/RheoMARS2/fluidlab/assets/targets&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/fluidlab/assets/targets" />
@@ -78,7 +85,7 @@
       <method v="2" />
     </configuration>
     <configuration name="debug" type="PythonConfigurationType" factoryName="Python">
-      <module name="RheoMars" />
+      <module name="RheoMARS2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -100,7 +107,7 @@
       <method v="2" />
     </configuration>
     <configuration name="eval_pre_train" type="PythonConfigurationType" factoryName="Python">
-      <module name="RheoMars" />
+      <module name="RheoMARS2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -113,7 +120,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GL --rl eval --pre_train_model $PROJECT_DIR$/../ml-agents/ml-agents/mlagents/trainers/results/pour_3d3/Cup/Cup-1999900_policy_model.pth --perc_type sensor" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GL --rl eval --pre_train_model $PROJECT_DIR$/logs/random_mu_pour2/best_policy.pt --perc_type sensor" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -265,7 +272,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GGUI --rl shac --exp_name=random_mu_pour2 --perc_type sensor" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GGUI --rl shac --exp_name=debug3 --perc_type sensor" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -651,7 +658,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py</url>
-          <line>45</line>
+          <line>43</line>
           <option name="timeStamp" value="406" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -682,24 +689,13 @@
         <line-breakpoint suspend="THREAD" type="python-line">
           <condition expression="self.sim.cur_step_global==1280" language="Python" />
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py</url>
-          <line>345</line>
+          <line>326</line>
           <option name="timeStamp" value="450" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <condition expression="self.sim.cur_step_global==1280" language="Python" />
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py</url>
-          <line>173</line>
-          <option name="timeStamp" value="451" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/simulators/mpm_simulator.py</url>
           <line>26</line>
           <option name="timeStamp" value="453" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>252</line>
-          <option name="timeStamp" value="456" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/utils/dataset.py</url>
@@ -708,78 +704,43 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>321</line>
+          <line>319</line>
           <option name="timeStamp" value="458" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/utils/dataset.py</url>
           <line>28</line>
           <option name="timeStamp" value="466" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/utils/dataset.py</url>
           <line>43</line>
           <option name="timeStamp" value="467" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>374</line>
-          <option name="timeStamp" value="468" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>263</line>
-          <option name="timeStamp" value="474" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>259</line>
-          <option name="timeStamp" value="475" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>277</line>
+          <line>274</line>
           <option name="timeStamp" value="476" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>317</line>
-          <option name="timeStamp" value="478" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>318</line>
-          <option name="timeStamp" value="479" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>247</line>
-          <option name="timeStamp" value="480" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>382</line>
-          <option name="timeStamp" value="481" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
           <line>227</line>
           <option name="timeStamp" value="482" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>482</line>
+          <line>488</line>
           <option name="timeStamp" value="485" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>14</line>
-          <option name="timeStamp" value="486" />
+          <line>473</line>
+          <option name="timeStamp" value="488" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>149</line>
-          <option name="timeStamp" value="487" />
+          <line>259</line>
+          <option name="timeStamp" value="495" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

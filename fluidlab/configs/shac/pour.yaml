@@ -6,14 +6,13 @@ params:
     name: SHACLoss
     target_file: Pouring.pkl
     weight:
-      density: 1
+      density: 10
       sdf: 0
       contact: 0
       is_soft_contact: False
-      area: 0.01
 
   config:
-    actor_learning_rate: 1e-5 # adam
+    actor_learning_rate: 5e-6 # adam
     critic_learning_rate: 1e-4 # adam
     lr_schedule: linear # ['constant', 'linear']
     target_critic_alpha: 0.1

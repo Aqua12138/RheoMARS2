@@ -39,14 +39,14 @@ class PouringEnv(FluidEnv):
             has_dynamics=True,
         )
 
-        self.taichi_env.add_static(
-            file='table.obj',
-            pos=(0.5, 0.0, 0.5),
-            euler=(0.0, 0.0, 0.0),
-            scale=(1, 1, 1),
-            material=CONE,
-            has_dynamics=True,
-        )
+        # self.taichi_env.add_static(
+        #     file='table.obj',
+        #     pos=(0.5, 0.0, 0.5),
+        #     euler=(0.0, 0.0, 0.0),
+        #     scale=(1, 1, 1),
+        #     material=CONE,
+        #     has_dynamics=True,
+        # )
 
     def setup_bodies(self):
         self.taichi_env.add_body(
@@ -104,8 +104,8 @@ class PouringEnv(FluidEnv):
     def reset(self):
         # Generate the first random number
         target_num = np.random.randint(0, 100)
-        lower = (0.3, 0.5, 0.3)
-        upper = (0.7, 0.8, 0.7)
+        lower = (0.3, 0.3, 0.7)
+        upper = (0.7, 0.7, 0.7)
         random_pos = np.random.uniform(lower, upper)
 
         init_agent_pos = self._init_state['state']['agent'][0][0:3]

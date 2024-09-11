@@ -84,7 +84,7 @@ class SHACPolicy:
 
         # timer
         self.time_report = TimeReport()
-
+        self.action_grads = []
     # ----------------- initialize -----------------
     def _initialize_environment(self, envs):
         self.envs = envs
@@ -197,7 +197,7 @@ class SHACPolicy:
             # action = dist.rsample() # contain grad_fn
             grid_sensor = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action = self.actor([grid_sensor, vector_obs])[2] # 2:random 4 detemistict
+            action = self.actor([grid_sensor, vector_obs])[4] # 2:random 4 detemistict
             actions[i] = action
             if torch.isnan(action).any():
                 print("The tensor contains NaN values")
@@ -257,10 +257,7 @@ class SHACPolicy:
                 actions_clone = actions[i].clone().detach().cpu().numpy()
             self.envs.step_grad(actions_clone)
 
-        action_grads = self.envs.get_action_grad([self.episode_length, self.episode_length - self.steps_num])[:, 0:-1,
-                       :]
-
-
+        action_grads = self.envs.get_action_grad([self.episode_length, self.episode_length - self.steps_num])[:, 0:-1, :]
         # 定义一个阈值，设为 1
         # max_norm = 0.001
         #
@@ -314,6 +311,7 @@ class SHACPolicy:
         self.time_report.start_timer("forward and backward simulation")
         actions, action_grads = self.compute_actor_loss()
         actions.backward(action_grads)
+        self.action_grads.append(action_grads)
         self.time_report.end_timer("forward and backward simulation")
 
         with torch.no_grad():
@@ -446,6 +444,7 @@ class SHACPolicy:
         self.episode_discounted_loss = torch.zeros(self.num_envs, dtype=torch.float32, device=self.device)
         self.episode_gamma = torch.ones(self.num_envs, dtype=torch.float32, device=self.device)
 
+        self.all_action_grads = []
         # main training process
         with tqdm(total=self.max_epochs, desc='Training Progress', unit='epoch', ncols=75, position=0,
                   file=sys.stdout) as pbar_outer:
@@ -472,6 +471,13 @@ class SHACPolicy:
                         self.writer.add_scalar('value_loss/step', self.value_loss, self.step_count)
                         self.writer.add_scalar('value_loss/iter', self.value_loss, self.iter_count)
 
+                action_grads = torch.cat(self.action_grads, dim=0)
+                for i in range(6):
+                    self.writer.add_histogram(f'{i}_action_grad/epoch', action_grads[:, 0, i], epoch)
+                self.action_grads = []
+                self.all_action_grads.append(action_grads)
+                torch.save(torch.cat(self.all_action_grads, dim=1), "/home/zhx/PycharmProjects/draw/debug_action_grad/action_grad.pth")
+
                 epoch_end_time = time.time()
                 epoch_duration = epoch_end_time - epoch_start_time
                 eta_total = epoch_duration * (self.max_epochs - epoch - 1)
@@ -491,7 +497,7 @@ class SHACPolicy:
     def save(self, filename=None):
         if filename is None:
             filename = 'best_policy'
-        torch.save([self.actor, self.critic, self.target_critic], os.path.join(self.log_dir, self.args.exp_name + '/policy/' + "{}.pt".format(filename)))
+        torch.save([self.actor, self.critic, self.target_critic], os.path.join(self.log_dir, self.args.exp_name + '/' + "{}.pt".format(filename)))
 
     def close(self):
         self.writer.close()
