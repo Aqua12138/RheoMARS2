@@ -23,7 +23,7 @@ params:
     gamma: 0.99
     betas: [0.9, 0.999] # adam
     max_epochs: 200
-    steps_num: 32
+    steps_num: 56
     grad_norm: 1
     truncate_grads: True
     num_actors: 4

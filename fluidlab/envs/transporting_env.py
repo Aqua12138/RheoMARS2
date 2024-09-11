@@ -13,8 +13,8 @@ import copy
 
 class TransportingEnv(FluidEnv):
     def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics"):
-        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=1280)
-        self.action_range = np.array([-0.003, 0.003])
+        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=128)
+        self.action_range = np.array([-0.007, 0.007])
 
     def setup_agent(self):
         agent_cfg = CfgNode(new_allowed=True)
@@ -106,7 +106,7 @@ class TransportingEnv(FluidEnv):
         # mu = np.random.uniform(0, 0)
         # self.taichi_env.simulator.update_mu(mu)
 
-        self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
+        self.taichi_env.set_state(init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         info = {}
         return self._get_obs(), info
 

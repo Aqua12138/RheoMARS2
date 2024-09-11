@@ -253,8 +253,8 @@ class SHAC_trainer:
                     nn.init.zeros_(m.bias)  # 将偏置初始化为0
 
     def build_actor_critic(self, state_shape, action_shape, device):
-        # model_path = "/home/zhx/Project/ml-agents/ml-agents/mlagents/trainers/results/debug/Cup/Cup-2700_policy_model.pth"
-        model_path = "/home/zhx/Project/ml-agents/ml-agents/mlagents/trainers/results/pour_3d/Cup/Cup-1499900_policy_model.pth"
+        model_path = "/home/zhx/Project/ml-agents/ml-agents/mlagents/trainers/results/debug/Cup/Cup-2700_policy_model.pth"
+        # model_path = "/home/zhx/Project/ml-agents/ml-agents/mlagents/trainers/results/pour_3d/Cup/Cup-1499900_policy_model.pth"
         self.actor = torch.load(model_path)["Policy"]
         # self.initialize_weights(self.actor)
         self.critic = torch.load(model_path)['Optimizer:critic']

@@ -197,7 +197,7 @@ class SHACPolicy:
             # action = dist.rsample() # contain grad_fn
             grid_sensor = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action = self.actor([grid_sensor, vector_obs])[4] # 2:random 4 detemistict
+            action = self.actor([grid_sensor, vector_obs])[2] # 2:random 4 detemistict
             actions[i] = action
             if torch.isnan(action).any():
                 print("The tensor contains NaN values")
@@ -472,11 +472,11 @@ class SHACPolicy:
                         self.writer.add_scalar('value_loss/iter', self.value_loss, self.iter_count)
 
                 action_grads = torch.cat(self.action_grads, dim=0)
-                for i in range(6):
-                    self.writer.add_histogram(f'{i}_action_grad/epoch', action_grads[:, 0, i], epoch)
-                self.action_grads = []
-                self.all_action_grads.append(action_grads)
-                torch.save(torch.cat(self.all_action_grads, dim=1), "/home/zhx/PycharmProjects/draw/debug_action_grad/action_grad.pth")
+                # for i in range(6):
+                #     self.writer.add_histogram(f'{i}_action_grad/epoch', action_grads[:, 0, i], epoch)
+                # self.action_grads = []
+                # self.all_action_grads.append(action_grads)
+                # torch.save(torch.cat(self.all_action_grads, dim=1), "/home/zhx/PycharmProjects/draw/debug_action_grad/action_grad.pth")
 
                 epoch_end_time = time.time()
                 epoch_duration = epoch_end_time - epoch_start_time
