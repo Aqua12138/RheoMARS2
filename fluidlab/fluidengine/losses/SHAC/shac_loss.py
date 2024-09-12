@@ -280,7 +280,7 @@ class SHACLoss(Loss):
 
     @ti.kernel
     def compute_reward_kernel(self, s: ti.i32):
-        self.rew[s] = ti.min(ti.max((self.step_loss[s - 1] - self.step_loss[s]), 1e-5), )
+        self.rew[s] = self.step_loss[s - 1] - self.step_loss[s]
         self.rew[s] = ti.select(ti.abs(self.rew[s]) < 1e-5, 0, self.rew[s])
 
 
