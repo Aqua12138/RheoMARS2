@@ -190,11 +190,20 @@ class SHACLoss(Loss):
         # print(self.density_loss.grad[s])
         # print(self.sdf_loss.grad[s])
         # print(self.contact_loss.grad[s])
+        self.compute_grid_mass(f)
         self.compute_contact_loss_grad(s, f)
+
         self.compute_sdf_loss_kernel.grad(s)
-        # print(self.grid_mass.grad)
+
         self.compute_density_loss_kernel.grad(s)
+        # print(self.debug_mass())
         self.compute_grid_mass_grad(f)
+    @ti.kernel
+    def debug_mass(self) -> ti.float64:
+        total_mass = 0
+        for I in ti.grouped(ti.ndrange(*self.res)):
+            total_mass += self.grid_mass.grad[I]
+        return total_mass
 
     def compute_grid_mass(self, f):
         self.grid_mass.fill(0)
@@ -241,7 +250,7 @@ class SHACLoss(Loss):
 
     @ti.kernel
     def compute_sdf_loss_kernel(self, s: ti.i32):
-        for I in ti.grouped(self.grid_mass):
+        for I in ti.grouped(ti.ndrange(*self.res)):
             self.sdf_loss[s] += self.target_sdf[I] * self.grid_mass[I]
 
     @ti.kernel
@@ -280,8 +289,8 @@ class SHACLoss(Loss):
 
     @ti.kernel
     def compute_reward_kernel(self, s: ti.i32):
-        self.rew[s] = self.step_loss[s - 1] - self.step_loss[s]
-        self.rew[s] = ti.select(ti.abs(self.rew[s]) < 1e-5, 0, self.rew[s])
+        self.rew[s] = -self.step_loss[s]
+        # self.rew[s] = ti.select(ti.abs(self.rew[s]) < 1e-5, 0, self.rew[s])
 
 
 
@@ -324,7 +333,7 @@ class SHACLoss(Loss):
 
     def get_step_loss(self):
         loss = self.step_loss[self.sim.cur_step_global]
-        reward = self.rew[self.sim.cur_step_global]
+        reward = self.step_loss[self.sim.cur_step_global-1] - self.step_loss[self.sim.cur_step_global]
         self._last_loss = loss
 
         loss_info = {}

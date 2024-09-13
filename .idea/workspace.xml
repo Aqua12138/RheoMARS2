@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/transport.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/transport.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/transporting_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/transporting_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -603,7 +604,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>228</line>
+          <line>229</line>
           <option name="timeStamp" value="373" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -643,7 +644,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/transporting_env.py</url>
-          <line>109</line>
+          <line>110</line>
           <option name="timeStamp" value="403" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -668,7 +669,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/transporting_env.py</url>
-          <line>117</line>
+          <line>118</line>
           <option name="timeStamp" value="418" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -684,7 +685,7 @@
         <line-breakpoint suspend="THREAD" type="python-line">
           <condition expression="self.sim.cur_step_global==1280" language="Python" />
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py</url>
-          <line>326</line>
+          <line>335</line>
           <option name="timeStamp" value="450" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
