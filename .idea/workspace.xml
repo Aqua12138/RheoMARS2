@@ -5,15 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/fluidlab/train.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/pour.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/pour.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/transport.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/transport.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/envs/transporting_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/transporting_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/losses/SHAC/shac_loss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/recorder.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/recorder.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +85,7 @@
       <method v="2" />
     </configuration>
     <configuration name="debug" type="PythonConfigurationType" factoryName="Python">
-      <module name="RheoMars" />
+      <module name="RheoMARS2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -359,7 +358,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor3d.py</url>
-          <line>41</line>
+          <line>40</line>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -669,7 +668,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/pouring_env.py</url>
-          <line>157</line>
+          <line>150</line>
           <option name="timeStamp" value="416" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -679,7 +678,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/pouring_env.py</url>
-          <line>122</line>
+          <line>117</line>
           <option name="timeStamp" value="425" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">

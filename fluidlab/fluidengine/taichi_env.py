@@ -72,7 +72,7 @@ class TaichiEnv:
                 mesh_cfg=effector_cfg.get('mesh', None),
                 boundary_cfg=effector_cfg.boundary,
             )
-        if hasattr(agent_cfg, 'sensors') and agent_cfg["build_sensor"]:
+        if hasattr(agent_cfg, 'sensors'):
             for sensor_cfg_dict in agent_cfg.sensors:
                 sensor_cfg = CfgNode(sensor_cfg_dict)
                 self.agent.add_sensor(

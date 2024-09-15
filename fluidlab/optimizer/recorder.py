@@ -205,7 +205,7 @@ class Recorder:
                 else:
                     action = None
                 obs, reward, done, done, info = self.env.step(action)
-                cv2.imshow('3d grid sensor', obs["gridsensor3d"].detach().cpu().numpy()[..., 0])
+                cv2.imshow('3d grid sensor', obs["gridsensor3d"].detach().cpu().numpy()[..., 1])
                 cv2.waitKey(1)
                 total_reward += reward
                 print(total_reward)

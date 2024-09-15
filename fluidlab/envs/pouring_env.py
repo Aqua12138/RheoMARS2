@@ -20,11 +20,6 @@ class PouringEnv(FluidEnv):
     def setup_agent(self):
         agent_cfg = CfgNode(new_allowed=True)
         agent_cfg.merge_from_file(get_cfg_path('agent_pouring.yaml'))
-        agent_cfg["build_sensor"] = False
-        if self.target_file is not None and self.perc_type == "sensor":
-            for sensor in agent_cfg.sensors:
-                sensor["params"]["target_file"] = self.target_file
-            agent_cfg["build_sensor"] = True
         self.taichi_env.setup_agent(agent_cfg)
         self.agent = self.taichi_env.agent
 
@@ -103,9 +98,9 @@ class PouringEnv(FluidEnv):
         return GatheringPolicy(optim_cfg, init_range, self.agent.action_dim, self.horizon, self.action_range)
     def reset(self):
         # Generate the first random number
-        target_num = np.random.randint(0, 100)
-        lower = (0.3, 0.5, 0.3)
-        upper = (0.7, 0.8, 0.7)
+        target_num = 0
+        lower = (0.5, 0.5, 0.5)
+        upper = (0.5, 0.5, 0.5)
         random_pos = np.random.uniform(lower, upper)
 
         init_agent_pos = self._init_state['state']['agent'][0][0:3]
@@ -121,12 +116,10 @@ class PouringEnv(FluidEnv):
 
         # set_target
         self.taichi_env.loss.update_target(target_num)
-        for i in range(len(self.agent.sensors)):
-            self.agent.sensors[i].update_target(target_num)
 
         # random mu
-        mu = np.random.uniform(0, 0)
-        self.taichi_env.simulator.update_mu(mu)
+        # mu = np.random.uniform(0, 0)
+        # self.taichi_env.simulator.update_mu(mu)
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         self.taichi_env.reset_grad()
