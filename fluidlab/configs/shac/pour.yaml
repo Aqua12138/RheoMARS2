@@ -12,7 +12,7 @@ params:
       is_soft_contact: False
 
   config:
-    actor_learning_rate: 1e-5 # adam
+    actor_learning_rate: 5e-6 # adam
     critic_learning_rate: 1e-4 # adam
     lr_schedule: linear # ['constant', 'linear']
     target_critic_alpha: 0.1
@@ -23,7 +23,7 @@ params:
     gamma: 0.99
     betas: [0.9, 0.999] # adam
     max_epochs: 200
-    steps_num: 32
+    steps_num: 224
     grad_norm: 1
     truncate_grads: True
     num_actors: 1
