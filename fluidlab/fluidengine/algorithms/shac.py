@@ -128,6 +128,8 @@ class SHACPolicy:
     def _initialize_buffers(self):
         # Initialize buffers for observations, rewards, etc.
         # replay buffer
+        self.obs_buf_grid2D = torch.zeros((self.steps_num, self.num_envs, *self.num_obs["gridsensor2d"].shape),
+                                          dtype=torch.float32, device=self.device)
         self.obs_buf_grid3D = torch.zeros((self.steps_num, self.num_envs, *self.num_obs["gridsensor3d"].shape),
                                           dtype=torch.float32, device=self.device)
         self.obs_buf_vector = torch.zeros((self.steps_num, self.num_envs, *self.num_obs["vector_obs"].shape),
@@ -188,6 +190,7 @@ class SHACPolicy:
         for i in range(self.steps_num):
             self.episode_length += 1
             with torch.no_grad():
+                self.obs_buf_grid2D[i] = obs['gridsensor2d'].clone()
                 self.obs_buf_grid3D[i] = obs['gridsensor3d'].clone()
                 self.obs_buf_vector[i] = obs['vector_obs'].clone()
 
@@ -195,9 +198,10 @@ class SHACPolicy:
             # logits, hidden = self.actor(obs)
             # dist = self.dist_fn(*logits)
             # action = dist.rsample() # contain grad_fn
-            grid_sensor = obs["gridsensor3d"]
+            grid_sensor2d = obs["gridsensor2d"]
+            grid_sensor3d = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action = self.actor([grid_sensor, vector_obs])[4] # 2:random 4 detemistict
+            action = self.actor([grid_sensor2d, grid_sensor3d, vector_obs])[4] # 2:random 4 detemistict
             actions[i] = action
             if torch.isnan(action).any():
                 print("The tensor contains NaN values")
@@ -208,9 +212,11 @@ class SHACPolicy:
             reward = torch.from_numpy(reward).to(self.device)
             done = torch.from_numpy(done).to(self.device)
 
-            obs['vector_obs'].requires_grad_(True)
+            obs['gridsensor2d'].requires_grad_(True)
             obs['gridsensor3d'].requires_grad_(True)
-            obs_list = [[obs['gridsensor3d'], obs['vector_obs']]]
+            obs['vector_obs'].requires_grad_(True)
+
+            obs_list = [[obs['gridsensor2d'], obs['gridsensor3d'], obs['vector_obs']]]
             next_values[i + 1] = self.target_critic.critic_pass(obs_list)[0]['extrinsic']
             if (next_values[i + 1] > 1e6).sum() > 0 or (next_values[i + 1] < -1e6).sum() > 0:
                 print('next value error')
@@ -221,8 +227,10 @@ class SHACPolicy:
                 actor_loss.backward()
                 # 传入taichi的obs对应变量中
                 state_grad = {}
-                state_grad['vector_obs'] = obs['vector_obs'].grad.cpu().numpy()
+                state_grad['grid_sensor2d'] = obs['gridsensor2d'].grad.cpu().numpy()
                 state_grad['grid_sensor3d'] = obs['gridsensor3d'].grad.cpu().numpy()
+                state_grad['vector_obs'] = obs['vector_obs'].grad.cpu().numpy()
+
                 # 按照环境进行分配
                 state_grads = [{key: value[i] for key, value in state_grad.items()} for i in range(self.num_envs)]
 
@@ -298,7 +306,7 @@ class SHACPolicy:
             raise NotImplementedError
 
     def compute_critic_loss(self, batch_sample):
-        obs_list = [[batch_sample['obs']['gridsensor3d'], batch_sample['obs']['vector_obs']]]
+        obs_list = [[batch_sample['obs']['gridsensor2d'], batch_sample['obs']['gridsensor3d'], batch_sample['obs']['vector_obs']]]
         predicted_values = self.critic.critic_pass(obs_list)[0]['extrinsic']
         target_values = batch_sample['target_values']
         critic_loss = ((predicted_values - target_values) ** 2).mean()
@@ -402,7 +410,7 @@ class SHACPolicy:
         with torch.no_grad():
             self.compute_target_values()
             dataset = CriticDataset(self.batch_size,
-                                    {"gridsensor3d": self.obs_buf_grid3D, "vector_obs": self.obs_buf_vector},
+                                    {"gridsensor2d": self.obs_buf_grid2D, "gridsensor3d": self.obs_buf_grid3D, "vector_obs": self.obs_buf_vector},
                                     self.target_values, drop_last=False)
         self.time_report.end_timer("prepare critic dataset")
         return dataset

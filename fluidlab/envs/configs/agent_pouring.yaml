@@ -27,11 +27,11 @@ sensors:
       lat_angle_south: 90
       lon_angle: 180
       max_distance: 1.0
-      min_distance: 0.0
+      min_distance: 0.2
       distance_normalization: 1
-#  - type: GridSensor2D
-#    params:
-#      sensor_name: gridsensor2d
-#      cell_size: 0.05
-#      x_range: 1
-#      z_range: 1
+  - type: GridSensor2D
+    params:
+      sensor_name: gridsensor2d
+      cell_size: 0.05
+      x_range: 1
+      z_range: 1
