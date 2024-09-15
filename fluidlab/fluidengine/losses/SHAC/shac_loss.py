@@ -2,28 +2,26 @@ import pickle as pkl
 from fluidlab.utils.misc import *
 from fluidlab.fluidengine.losses.Adam.loss import Loss
 
+
 @ti.data_oriented
 class SHACLoss(Loss):
     def __init__(
             self,
             **kwargs,
-        ):
+    ):
         super(SHACLoss, self).__init__(**kwargs)
         self._gamma = 0.99
-        self.gamma = ti.field(dtype=DTYPE_TI, shape=(), needs_grad=False)
-        self.rew = ti.field(dtype=DTYPE_TI, shape=(self.max_loss_steps+1,), needs_grad=True)
-        self.rew_acc = ti.field(dtype=DTYPE_TI, shape=(self.max_loss_steps+1,), needs_grad=True)
-        self.actor_loss = ti.field(dtype=DTYPE_TI, shape=(), needs_grad=True)
+        self.gamma = ti.field(dtype=DTYPE_TI_64, shape=(), needs_grad=False)
+        self.rew = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,), needs_grad=True)
+        self.rew_acc = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,), needs_grad=True)
+        self.actor_loss = ti.field(dtype=DTYPE_TI_64, shape=(), needs_grad=True)
 
     def build(self, sim):
         self.density_weight = self.weights['density']
-        self.density_loss = ti.field(dtype=DTYPE_TI, shape=(self.max_loss_steps+1,), needs_grad=True)
+        self.density_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,), needs_grad=True)
 
         self.sdf_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,), needs_grad=True)
         self.sdf_weight = self.weights['sdf']
-
-        self.area_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,), needs_grad=True)
-        self.area_weight = self.weights['area']
 
         self.contact_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,), needs_grad=True)
         self.min_dist = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,), needs_grad=True)
@@ -46,9 +44,11 @@ class SHACLoss(Loss):
         self.tgt_particles_x = ti.Vector.field(self.dim, dtype=DTYPE_TI, shape=self.n_particles)
         self.iou()
         self._target_iou = self._iou
+
     @ti.func
     def isnan(self, x):
         return not (x <= 0 or x >= 0)
+
     def iou(self):
         self._iou = self.iou_kernel()
 
@@ -69,11 +69,11 @@ class SHACLoss(Loss):
         U = Ua / ma + Ub / mb
 
         return I / (U - I)
+
     def reset_grad(self):
         super(SHACLoss, self).reset_grad()
         self.density_loss.grad.fill(0)
         self.sdf_loss.grad.fill(0)
-        self.area_loss.grad.fill(0)
         self.contact_loss.grad.fill(0)
         self.min_dist.grad.fill(0)
         self.dist_norm.grad.fill(0)
@@ -100,6 +100,7 @@ class SHACLoss(Loss):
         self.target_sdf_copy.fill(self.inf)
         for i in range(self.n_grid * 2):
             self.update_target_sdf()
+
     @ti.func
     def norm(self, x, eps=1e-8):
         return ti.sqrt(x.dot(x) + eps)
@@ -109,7 +110,7 @@ class SHACLoss(Loss):
         for I in ti.grouped(self.target_sdf):
             self.target_sdf[I] = self.inf
             grid_pos = ti.cast(I * self.dx, DTYPE_TI_64)
-            if self.target_density[I] > 1e-4:  # TODO: make it configurable
+            if self.target_density[I] > 1e-12:  # TODO: make it configurable
                 self.target_sdf[I] = 0.
                 self.nearest_point[I] = grid_pos
             else:
@@ -134,9 +135,6 @@ class SHACLoss(Loss):
 
         self.sdf_loss.fill(0)
         self.sdf_loss.grad.fill(0)
-
-        self.area_loss.fill(0)
-        self.area_loss.grad.fill(0)
 
         self.contact_loss.fill(0)
         self.contact_loss.grad.fill(0)
@@ -165,7 +163,6 @@ class SHACLoss(Loss):
         self.iou()
         self.compute_density_loss_kernel(s)
         self.compute_sdf_loss_kernel(s)
-        self.compute_area_loss_kernel(s, f)
         self.compute_contact_loss(s, f)
 
         self.sum_up_loss_kernel(s)
@@ -175,7 +172,6 @@ class SHACLoss(Loss):
         self.iou()
         self.compute_density_loss_kernel(s)
         self.compute_sdf_loss_kernel(s)
-        self.compute_area_loss_kernel(s, f)
         self.compute_contact_loss(s, f)
 
         self.sum_up_loss_kernel(s)
@@ -194,22 +190,24 @@ class SHACLoss(Loss):
         # print(self.density_loss.grad[s])
         # print(self.sdf_loss.grad[s])
         # print(self.contact_loss.grad[s])
+        self.compute_grid_mass(f)
         self.compute_contact_loss_grad(s, f)
-        self.compute_area_loss_kernel.grad(s, f)
+
         self.compute_sdf_loss_kernel.grad(s)
-        # print(self.grid_mass.grad)
         self.compute_density_loss_kernel.grad(s)
+        # print(self.debug_mass())
         self.compute_grid_mass_grad(f)
+    @ti.kernel
+    def debug_mass(self) -> ti.float64:
+        total_mass = 0
+        for I in ti.grouped(ti.ndrange(*self.res)):
+            total_mass += self.grid_mass.grad[I]
+        return total_mass
 
     def compute_grid_mass(self, f):
-        self.reset_grid_and_grad()
+        self.grid_mass.fill(0)
+        self.grid_mass.grad.fill(0)
         self.compute_grid_mass_kernel(f)
-
-    @ti.kernel
-    def reset_grid_and_grad(self):
-        for I in ti.grouped(ti.ndrange(*self.res)):
-            self.grid_mass[I]=0
-            self.grid_mass.grad[I]=0
 
     def compute_grid_mass_grad(self, f):
         self.compute_grid_mass_kernel.grad(f)
@@ -249,20 +247,10 @@ class SHACLoss(Loss):
         for I in ti.grouped(ti.ndrange(*self.res)):
             self.density_loss[s] += ti.abs(self.grid_mass[I] - self.target_density[I])
 
-
     @ti.kernel
     def compute_sdf_loss_kernel(self, s: ti.i32):
-        for I in ti.grouped(self.grid_mass):
+        for I in ti.grouped(ti.ndrange(*self.res)):
             self.sdf_loss[s] += self.target_sdf[I] * self.grid_mass[I]
-
-    @ti.kernel
-    def compute_area_loss_kernel(self, s: ti.i32, f: ti.i32):
-        for p in range(self.n_particles):
-            base = (self.particle_x[f, p] * self.sim.inv_dx).cast(int)
-            # 检查网格位置是否在有效范围内
-            if 0 <= base[0] < self.res[0] and 0 <= base[1] < self.res[1] and 0 <= base[2] < self.res[2]:
-                if self.target_density[base] > 0:
-                    self.area_loss[s] -= 1  # 如果粒子在非零区域内，奖励加一
 
     @ti.kernel
     def compute_contact_distance_normalize_kernel(self, s: ti.i32, f: ti.i32):
@@ -296,19 +284,17 @@ class SHACLoss(Loss):
     def sum_up_loss_kernel(self, s: ti.i32):
         self.step_loss[s] += self.density_loss[s] * self.density_weight
         self.step_loss[s] += self.sdf_loss[s] * self.sdf_weight
-        self.step_loss[s] += self.area_loss[s] * self.area_weight
         self.step_loss[s] += self.contact_loss[s] * self.contact_weight
 
     @ti.kernel
     def compute_reward_kernel(self, s: ti.i32):
-        self.rew[s] = self.step_loss[s-1] - self.step_loss[s]
-        if ti.abs(self.rew[s]) < 1e-5:
-            self.rew[s] = 0
+        self.rew[s] = -self.step_loss[s]
 
     @ti.kernel
     def compute_gamma_reward_kernel(self, s: ti.i32):
-        self.rew_acc[s] = self.rew_acc[s-1] + self.gamma[None] * self.rew[s]
         self.gamma[None] *= self._gamma
+        self.rew_acc[s] = self.rew_acc[s - 1] + self.gamma[None] * self.rew[s]
+
 
     @ti.kernel
     def compute_actor_loss_kernel(self, s: ti.i32):
@@ -316,8 +302,8 @@ class SHACLoss(Loss):
 
     def expand_temporal_range(self):
         if self.temporal_range_type == 'expand':
-            loss_improved = (self.best_loss - self.total_loss[None]) # loss 上升值
-            loss_improved_rate = loss_improved / self.best_loss # loss 上升速度
+            loss_improved = (self.best_loss - self.total_loss[None])  # loss 上升值
+            loss_improved_rate = loss_improved / self.best_loss  # loss 上升速度
 
             # 判断停滞情况
             if loss_improved_rate < self.plateau_thresh[0] or loss_improved < self.plateau_thresh[1]:
@@ -341,13 +327,13 @@ class SHACLoss(Loss):
 
     def compute_actor_loss_grad(self):
         self.compute_actor_loss_kernel.grad(self.sim.cur_step_global)
+
     def get_step_loss(self):
         loss = self.step_loss[self.sim.cur_step_global]
-        reward = self.rew[self.sim.cur_step_global]
+        reward = self.step_loss[self.sim.cur_step_global-1] - self.step_loss[self.sim.cur_step_global]
         self._last_loss = loss
 
         loss_info = {}
         loss_info['reward'] = reward
         loss_info['loss'] = loss
         return loss_info
-            

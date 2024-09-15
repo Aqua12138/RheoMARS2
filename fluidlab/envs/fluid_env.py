@@ -221,7 +221,15 @@ class FluidEnv(gym.Env):
         return obs, reward, done, done, info
 
     def step_grad(self, action):
+        action *= self.action_range[1]
         action = action.clip(self.action_range[0], self.action_range[1])
+
+        action = np.array([action[0],
+                               action[1],
+                               action[2],
+                               action[3] * 3,
+                               action[4] * 3,
+                               action[5] * 3])
         self.taichi_env.step_grad(action)
 
     def render(self, mode='human'):

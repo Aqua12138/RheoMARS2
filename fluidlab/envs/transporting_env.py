@@ -107,6 +107,7 @@ class TransportingEnv(FluidEnv):
         # self.taichi_env.simulator.update_mu(mu)
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
+        self.taichi_env.reset_grad()
         info = {}
         return self._get_obs(), info
 

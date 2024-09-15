@@ -197,7 +197,7 @@ class SHACPolicy:
             # action = dist.rsample() # contain grad_fn
             grid_sensor = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action = self.actor([grid_sensor, vector_obs])[2] # 2:random 4 detemistict
+            action = self.actor([grid_sensor, vector_obs])[4] # 2:random 4 detemistict
             actions[i] = action
             if torch.isnan(action).any():
                 print("The tensor contains NaN values")
@@ -272,10 +272,10 @@ class SHACPolicy:
         #
         # # 裁减梯度
         # clipped_action_grads = action_grads * clip_coef
-        #
-        # if torch.isnan(torch.tensor(clipped_action_grads, dtype=torch.float32).to(self.device).permute(1, 0, 2)).any():
-        #     print("The tensor contains NaN values")
-        #     clipped_action_grads = np.zeros_like(clipped_action_grads)
+
+        if torch.isnan(torch.tensor(action_grads, dtype=torch.float32).to(self.device).permute(1, 0, 2)).any():
+            print("The tensor contains NaN values")
+            action_grads = np.zeros_like(action_grads)
         return actions, torch.tensor(action_grads, dtype=torch.float32).to(self.device).permute(1, 0, 2)
 
     @torch.no_grad()
@@ -491,7 +491,7 @@ class SHACPolicy:
     def save(self, filename=None):
         if filename is None:
             filename = 'best_policy'
-        torch.save([self.actor, self.critic, self.target_critic], os.path.join(self.log_dir, self.args.exp_name + '/policy/' + "{}.pt".format(filename)))
+        torch.save([self.actor, self.critic, self.target_critic], os.path.join(self.log_dir, self.args.exp_name + '/' + "{}.pt".format(filename)))
 
     def close(self):
         self.writer.close()

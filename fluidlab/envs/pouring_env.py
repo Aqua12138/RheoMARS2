@@ -125,8 +125,8 @@ class PouringEnv(FluidEnv):
             self.agent.sensors[i].update_target(target_num)
 
         # random mu
-        # mu = np.random.uniform(0, 0)
-        # self.taichi_env.simulator.update_mu(mu)
+        mu = np.random.uniform(0, 0)
+        self.taichi_env.simulator.update_mu(mu)
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         self.taichi_env.reset_grad()

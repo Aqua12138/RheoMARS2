@@ -12,8 +12,8 @@ params:
       is_soft_contact: False
 
   config:
-    actor_learning_rate: 1e-5 # adam
-    critic_learning_rate: 1e-5 # adam
+    actor_learning_rate: 2e-4 # adam
+    critic_learning_rate: 2e-4 # adam
     lr_schedule: linear # ['constant', 'linear']
     target_critic_alpha: 0.2
     critic_iterations: 16
