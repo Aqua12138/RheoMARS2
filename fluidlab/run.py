@@ -29,6 +29,7 @@ def get_args():
     parser.add_argument("--rl", type=str, default='default')
     parser.add_argument("--perc_type", type=str, default='physics')
     parser.add_argument("--pre_train_model", type=str, default=None)
+    parser.add_argument("--intial_model", action='store_true')
 
 
 

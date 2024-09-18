@@ -190,7 +190,7 @@ class SHAC_trainer:
             state_shape.append(space.shape)
         action_shape = train_envs.action_space[0].shape
 
-        self.build_actor_critic(model_path=args.pre_train_model)
+        self.build_actor_critic(model_path=args.pre_train_model, intial_model=args.intial_model)
         # self._init_actor_critic()
 
         self.policy = SHACPolicy(
@@ -252,18 +252,15 @@ class SHAC_trainer:
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)  # 将偏置初始化为0
 
-    def build_actor_critic(self, model_path):
-        # model_path = "/home/zhx/Project/ml-agents/ml-agents/mlagents/trainers/results/debug/Cup/Cup-2700_policy_model.pth"
-        # model_path = "/home/zhx/Project/ml-agents/ml-agents/mlagents/trainers/results/pour_3d/Cup/Cup-1499900_policy_model.pth"
+    def build_actor_critic(self, model_path, intial_model=False):
         self.actor = torch.load(model_path)["Policy"]
-        # self.initialize_weights(self.actor)
         self.critic = torch.load(model_path)['Optimizer:critic']
-        # self.initialize_weights(self.critic)
 
-        # net_a = CustomNet(state_shape, hidden_sizes=[256, 128], activation=nn.Tanh, device=device, input_size=256)
-        # net_c = CustomNet(state_shape, hidden_sizes=[256, 128], activation=nn.Tanh, device=device, input_size=256)
-        # self.actor = ActorProb(net_a, action_shape, device=device, max_action=1).to(device)
-        # self.critic = Critic(net_c, device=device).to(device)
+        if intial_model:
+            # 对比实验
+            self.initialize_weights(self.actor)
+            self.initialize_weights(self.critic)
+
 
 
 class CriticNetwork(nn.Module):
