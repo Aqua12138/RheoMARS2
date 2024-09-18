@@ -34,8 +34,8 @@ class GridSensor:
         self.particles = particle_state.field(shape=(self.horizon, self.n_particles,), needs_grad=True, layout=ti.Layout.SOA)
 
         # mesh_state
-        self.resolution = (64, 64, 64)
-        self.dx = 1 / 64
+        self.resolution = (32, 32, 32)
+        self.dx = 1 / 32
         self.n_nodes = self.resolution[0] * self.resolution[1] * self.resolution[2]
 
         # init_nodes_x

@@ -98,9 +98,9 @@ class PouringEnv(FluidEnv):
         return GatheringPolicy(optim_cfg, init_range, self.agent.action_dim, self.horizon, self.action_range)
     def reset(self):
         # Generate the first random number
-        target_num = 0
-        lower = (0.5, 0.5, 0.5)
-        upper = (0.5, 0.5, 0.5)
+        target_num = np.random.randint(0, 100)
+        lower = (0.3, 0.4, 0.3)
+        upper = (0.7, 0.7, 0.7)
         random_pos = np.random.uniform(lower, upper)
 
         init_agent_pos = self._init_state['state']['agent'][0][0:3]
@@ -118,8 +118,8 @@ class PouringEnv(FluidEnv):
         self.taichi_env.loss.update_target(target_num)
 
         # random mu
-        # mu = np.random.uniform(0, 0)
-        # self.taichi_env.simulator.update_mu(mu)
+        mu = np.random.uniform(0, 100)
+        self.taichi_env.simulator.update_mu(mu)
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         self.taichi_env.reset_grad()

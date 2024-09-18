@@ -5,15 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor2d.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/macros.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/macros.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/ppo/default.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/ppo/pour.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/pour.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/pour.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/envs/configs/agent_pouring.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/configs/agent_pouring.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/utils/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/utils/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/losses/PPO/ppo_loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/losses/PPO/ppo_loss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/recorder.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/recorder.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,15 +40,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "SHAC",
-    "last_opened_file_path": "/home/zhx/Project/RheoMARS2/fluidlab/fluidengine/sensors",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;SHAC&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/zhx/Project/RheoMARS2/fluidlab/fluidengine/sensors&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/fluidlab/fluidengine/sensors" />
@@ -62,7 +64,7 @@
       <recent name="$PROJECT_DIR$/fluidlab/envs" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.shac_trainer">
+  <component name="RunManager" selected="Python.eval_pre_train">
     <configuration name="collect_data" type="PythonConfigurationType" factoryName="Python">
       <module name="RheoMars" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -99,7 +101,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GGUI --debug --perc_type sensor" />
+      <option name="PARAMETERS" value="--cfg_file configs/ppo/pour.yaml --renderer_type GGUI --debug --perc_type sensor" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -121,7 +123,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GL --rl eval --pre_train_model $PROJECT_DIR$/logs/random_mu_pour3/best_policy.pt --perc_type sensor" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GL --rl eval --pre_train_model $PROJECT_DIR$/logs/random_mu_pou11/best_policy.pt --perc_type sensor" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -172,7 +174,7 @@
       <method v="2" />
     </configuration>
     <configuration name="ppo_trainer" type="PythonConfigurationType" factoryName="Python">
-      <module name="RheoMars" />
+      <module name="RheoMARS2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -185,7 +187,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/ppo/default.yaml --renderer_type GGUI --rl ppo --exp_name=ppo_test --perc_type sensor" />
+      <option name="PARAMETERS" value="--cfg_file configs/ppo/pour.yaml --renderer_type GGUI --rl ppo --exp_name=ppo_pour_inviscous --perc_type sensor --pre_train_model $PROJECT_DIR$/../ml-agents/ml-agents/mlagents/trainers/results/pour_3d_2d/Cup/Cup-1499900_policy_model.pth" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -194,7 +196,7 @@
       <method v="2" />
     </configuration>
     <configuration name="record_target" type="PythonConfigurationType" factoryName="Python">
-      <module name="RheoMars" />
+      <module name="RheoMARS2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -273,7 +275,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GGUI --rl shac --exp_name=random_mu_pour4 --perc_type sensor --pre_train_model $PROJECT_DIR$/../ml-agents/ml-agents/mlagents/trainers/results/pour_3d_2d/Cup/Cup-1499900_policy_model.pth" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/pour.yaml --renderer_type GGUI --rl shac --exp_name=random_mu_pou11 --perc_type sensor --pre_train_model $PROJECT_DIR$/../ml-agents/ml-agents/mlagents/trainers/results/pour_3d_2d/Cup/Cup-1499900_policy_model.pth" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -282,7 +284,7 @@
       <method v="2" />
     </configuration>
     <configuration name="text" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="RheoMars" />
+      <module name="RheoMARS2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -406,16 +408,6 @@
           <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/policy/base.py</url>
           <line>170</line>
           <option name="timeStamp" value="87" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>121</line>
-          <option name="timeStamp" value="88" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>113</line>
-          <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/data/collector.py</url>
@@ -776,13 +768,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
-          <line>14</line>
-          <option name="timeStamp" value="486" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py</url>
           <line>151</line>
           <option name="timeStamp" value="487" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/policy/modelfree/pg.py</url>
+          <line>107</line>
+          <option name="timeStamp" value="493" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
+          <line>94</line>
+          <option name="timeStamp" value="495" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
+          <line>120</line>
+          <option name="timeStamp" value="496" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

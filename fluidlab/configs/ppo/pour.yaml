@@ -1,28 +1,29 @@
 params:
   env:
-    name: Transporting-v0
+    name: Pouring-v0
     seed: 123
   loss:
     name: PPOLoss
-    target_file: Transporting_grid-v0.pkl
+    target_file: Pouring.pkl
     weight:
-      density: 1
-      sdf: 100
+      density: 100
+      sdf: 0
       contact: 0
       is_soft_contact: False
 
   config:
-    deterministic_eval: True
+    deterministic_eval: False
     action_scaling: False
     ReplayBufferSize: 20000
-    max_epochs: 10
+    max_epochs: 60
     step_per_epochs: 50000
     repeat_per_collect: 10
     episode_per_test: 10
     batch_size: 256
     step_per_collect: 2000
-    num_envs: 2
-    lr: 0.0003
+    num_envs: 3
+    lr: 0.00005
+    betas: [0.9, 0.999]
     device: cuda:0
 
 

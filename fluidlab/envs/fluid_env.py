@@ -217,7 +217,7 @@ class FluidEnv(gym.Env):
             done = True
 
         info = dict()
-        self.render()
+        # self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):

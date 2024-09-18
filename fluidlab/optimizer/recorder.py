@@ -220,7 +220,7 @@ class Recorder:
             for i in range(self.env.horizon):
                 if i < self.env.horizon:
                     # action = policy(list(obs.values()))[2][0, :].detach().cpu()
-                    action = policy([obs['gridsensor3d'].unsqueeze(0), obs['vector_obs'].unsqueeze(0)])[2][0, :].detach().cpu()
+                    action = policy([obs['gridsensor2d'].unsqueeze(0), obs['gridsensor3d'].unsqueeze(0), obs['vector_obs'].unsqueeze(0)])[2][0, :].detach().cpu()
                 else:
                     action = None
                 obs, _, _, _, _ = self.env.step(action)

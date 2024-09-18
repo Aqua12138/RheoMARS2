@@ -12,14 +12,14 @@ class PPOLoss(Loss):
 
     def build(self, sim):
         self.density_weight = self.weights['density']
-        self.density_loss = ti.field(dtype=DTYPE_TI, shape=(self.max_loss_steps,))
+        self.density_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,))
 
-        self.sdf_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps,))
+        self.sdf_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,))
         self.sdf_weight = self.weights['sdf']
 
-        self.contact_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps,))
-        self.min_dist = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps,))
-        self.dist_norm = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps,))
+        self.contact_loss = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,))
+        self.min_dist = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,))
+        self.dist_norm = ti.field(dtype=DTYPE_TI_64, shape=(self.max_loss_steps+1,))
         self.contact_weight = self.weights['contact']
         self.soft_contact_loss = self.weights['is_soft_contact']
 
@@ -34,10 +34,11 @@ class PPOLoss(Loss):
 
         self.primitive = self.agent.effectors[0].mesh
         self.particle_mass = self.sim.particles_i.mass
-        self.grid_mass = ti.field(dtype=DTYPE_TI_64, shape=(*self.res,))
-        self.grid_mass.from_numpy(self.grids)
+        self.grid_mass = ti.field(dtype=DTYPE_TI_64, shape=(*self.res,), needs_grad=True)
+        self.tgt_particles_x = ti.Vector.field(self.dim, dtype=DTYPE_TI, shape=self.n_particles)
         self.iou()
         self._target_iou = self._iou
+
     @ti.func
     def isnan(self, x):
         return not (x <= 0 or x >= 0)
@@ -63,19 +64,21 @@ class PPOLoss(Loss):
         return I / (U - I)
 
     def load_target(self, path):
-        self.target = pkl.load(open(path, 'rb'))
-        self.tgt_particles_x = ti.Vector.field(self.dim, dtype=DTYPE_TI, shape=self.n_particles)
-        self.tgt_particles_x.from_numpy(self.target['last_pos'])
-        self.grids = self.target['last_grid']
-        self.target_density.from_numpy(self.grids)
-        self.update_target()
+        self.targets = pkl.load(open(path, 'rb'))
         print(f'===>  Target loaded from {path}.')
 
     # -----------------------------------------------------------
     # preprocess target to calculate sdf
     # -----------------------------------------------------------
 
-    def update_target(self):
+    def update_target(self, i):
+        self.tgt_particles_x.from_numpy(self.targets['last_pos'][i])
+        self.grids = self.targets['last_grid'][i]
+        self.target_density.from_numpy(self.grids)
+        self.grid_mass.from_numpy(self.grids)
+        self._update_target()
+
+    def _update_target(self):
         self.target_sdf_copy.fill(self.inf)
         for i in range(self.n_grid * 2):
             self.update_target_sdf()
@@ -218,10 +221,9 @@ class PPOLoss(Loss):
 
     def get_step_loss(self):
         cur_step_loss = self.step_loss[self.sim.cur_step_global]
-
-        loss = cur_step_loss
-        reward = (self._last_loss-loss) * 1000
-        self._last_loss = loss
+        init_step_loss = self.step_loss[self.sim.cur_step_global-1]
+        loss = self.step_loss[self.sim.cur_step_global]
+        reward = self.step_loss[self.sim.cur_step_global-1] - self.step_loss[self.sim.cur_step_global]
 
         loss_info = {}
         loss_info['reward'] = reward
