@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +55,7 @@
       <recent name="$PROJECT_DIR$/fluidlab/envs" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.eval_pre_train">
+  <component name="RunManager" selected="Python.shac_trainer">
     <configuration name="collect_data" type="PythonConfigurationType" factoryName="Python">
       <module name="RheoMars" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -515,7 +516,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/run.py</url>
-          <line>79</line>
+          <line>80</line>
           <option name="timeStamp" value="252" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -580,7 +581,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>261</line>
+          <line>262</line>
           <option name="timeStamp" value="350" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
