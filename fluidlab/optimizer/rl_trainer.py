@@ -193,7 +193,7 @@ class PPO_trainer:
         self.actor = CustomActor(actor_model, self.action_shape)
         self.critic = CustomCritic(critic_model)
 
-        self.optimizer = torch.optim.Adam(list(self.actor.parameters()) + list(self.critic.parameters()), lr=self.cfg.params.config.lr)
+        self.optimizer = torch.optim.Adam(list(self.actor.parameters()) + list(self.critic.parameters()), lr=self.cfg.params.config.lr, betas=self.cfg.params.config.betas)
 
     # 定义动作分布函数
     def dist_fn(self, mean, log_std):

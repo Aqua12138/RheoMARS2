@@ -6,13 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/configs/macros.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/macros.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/configs/ppo/pour.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/ppo/pour.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/pour.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/pour.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/losses/PPO/ppo_loss_w.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/losses/PPO/ppo_loss_w.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

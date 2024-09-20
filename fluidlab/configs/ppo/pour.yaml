@@ -16,11 +16,11 @@ params:
     action_scaling: False
     ReplayBufferSize: 20000
     max_epochs: 60
-    step_per_epochs: 50000
-    repeat_per_collect: 10
-    episode_per_test: 10
-    batch_size: 128
-    step_per_collect: 128
+    step_per_epochs: 2240
+    repeat_per_collect: 1
+    episode_per_test: 1
+    batch_size: 256
+    step_per_collect: 2240
     num_envs: 1
     lr: 0.00005
     betas: [0.9, 0.999]
