@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/macros.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/macros.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
