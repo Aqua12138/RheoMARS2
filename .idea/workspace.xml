@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/macros.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/macros.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,13 +301,13 @@
       <item itemvalue="Python.debug" />
       <item itemvalue="Python.eval_pre_train" />
       <item itemvalue="Python.gridsensor3d" />
+      <item itemvalue="Python.load_model" />
       <item itemvalue="Python.ppo_trainer" />
       <item itemvalue="Python.record_target" />
       <item itemvalue="Python.replay_policy" />
       <item itemvalue="Python.run" />
       <item itemvalue="Python.shac_trainer" />
       <item itemvalue="Python.text" />
-      <item itemvalue="Python.load_model" />
     </list>
     <recent_temporary>
       <list>
