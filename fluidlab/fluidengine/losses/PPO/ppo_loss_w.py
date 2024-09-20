@@ -3,6 +3,7 @@ from fluidlab.utils.misc import *
 from fluidlab.fluidengine.losses.Adam.loss import Loss
 import ot
 
+
 class PPOWLoss(Loss):
     def __init__(
             self,
