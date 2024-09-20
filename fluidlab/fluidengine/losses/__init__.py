@@ -13,3 +13,4 @@ from fluidlab.fluidengine.losses.Adam.sdf_density_loss import *
 from fluidlab.fluidengine.losses.Adam.dynamic_distance_loss import *
 from fluidlab.fluidengine.losses.SHAC.shac_loss import *
 from fluidlab.fluidengine.losses.PPO.ppo_loss import *
+from fluidlab.fluidengine.losses.PPO.ppo_loss_w import *

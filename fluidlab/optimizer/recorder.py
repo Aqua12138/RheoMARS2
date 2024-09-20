@@ -195,6 +195,8 @@ class Recorder:
         # action_p = policy.get_actions_p()
         # if action_p is not None:
         #     taichi_env.apply_agent_action_p(action_p)
+        # for j in range(10):
+        self.env.reset()
         for j in range(10):
             self.env.reset()
             total_reward = 0
@@ -210,25 +212,35 @@ class Recorder:
                 total_reward += reward
                 print(total_reward)
 
+
+
     def eval(self, model_path):
         policy = torch.load(model_path)[0]
         # policy = torch.load(model_path)["Policy"]
         policy.eval()
         taichi_env = self.env.taichi_env
+        np_total_reward = []
         for i in range(10):
             obs, _ = self.env.reset()
+            np_reward = []
+            total_reward = 0
             for i in range(self.env.horizon):
                 if i < self.env.horizon:
                     # action = policy(list(obs.values()))[2][0, :].detach().cpu()
                     action = policy([obs['gridsensor2d'].unsqueeze(0), obs['gridsensor3d'].unsqueeze(0), obs['vector_obs'].unsqueeze(0)])[2][0, :].detach().cpu()
                 else:
                     action = None
-                obs, _, _, _, _ = self.env.step(action)
+                obs, reward, done, done, info = self.env.step(action)
+                total_reward += reward
+                np_reward.append(total_reward)
                 if not is_on_server():
                     if hasattr(taichi_env.loss, 'tgt_particles_x'):
                         taichi_env.render('human', taichi_env.loss.tgt_particles_x)
                     else:
                         taichi_env.render('human')
+            np_total_reward.append(np_reward)
+        np.save("/home/zhx/PycharmProjects/draw/w_compare_s/conveyance_w", np.array(np_total_reward))
+
 
 
 

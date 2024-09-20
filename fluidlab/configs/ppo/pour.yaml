@@ -6,8 +6,8 @@ params:
     name: PPOLoss
     target_file: Pouring.pkl
     weight:
-      density: 100
-      sdf: 0
+      density: 21
+      sdf: 21
       contact: 0
       is_soft_contact: False
 
