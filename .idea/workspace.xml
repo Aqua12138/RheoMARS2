@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/fluidlab/configs/ppo/pour.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/ppo/pour.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -374,11 +374,6 @@
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>90</line>
-          <option name="timeStamp" value="82" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/trainer/utils.py</url>
           <line>26</line>
           <option name="timeStamp" value="84" />
@@ -485,7 +480,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>188</line>
+          <line>201</line>
           <option name="timeStamp" value="212" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -495,13 +490,8 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>182</line>
+          <line>195</line>
           <option name="timeStamp" value="238" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>89</line>
-          <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/policies.py</url>
@@ -580,7 +570,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>262</line>
+          <line>275</line>
           <option name="timeStamp" value="350" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -764,11 +754,6 @@
           <url>file://$USER_HOME$/anaconda3/envs/fluidlab/lib/python3.7/site-packages/tianshou/policy/modelfree/pg.py</url>
           <line>107</line>
           <option name="timeStamp" value="493" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>94</line>
-          <option name="timeStamp" value="495" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>

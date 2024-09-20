@@ -14,7 +14,7 @@ import numpy as np
 from tianshou.data import Collector, VectorReplayBuffer
 from tianshou.env import DummyVectorEnv
 from tianshou.policy import BasePolicy, PPOPolicy
-from tianshou.trainer import OnpolicyTrainer
+from tianshou.trainer import onpolicy_trainer
 from tianshou.utils.net.common import ActorCritic, Net
 from tianshou.utils.net.continuous import ActorProb
 from torch.distributions import Distribution, Independent, Normal
@@ -85,6 +85,30 @@ class MyDummyVectorEnv(DummyVectorEnv):
                 raise NotImplementedError('Environment does not implement get_action_grad method')
             results.append(result)
         return np.array(results)
+class CustomActor(nn.Module):
+    def __init__(self, model, action_shape):
+        super().__init__()
+        self.model = model  # 已有的模型
+        self.log_std = nn.Parameter(torch.zeros(action_shape))
+    def forward(self, obs, state=None, info={}):
+        # 将obs转换为obs_list
+        obs_list = [obs.gridsensor2d, obs.gridsensor3d, obs.vector_obs]
+        mean = self.model(obs_list)[4] # 获取动作的logits
+        log_std = self.log_std.expand_as(mean)  # 扩展 log_std
+        return (mean, log_std), state  # 返回均值和对数标准差
+
+# 自定义Critic网络
+class CustomCritic(nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model = model  # 已有的模型
+
+    def forward(self, obs, **kwargs):
+        obs_list =  [[obs.gridsensor2d, obs.gridsensor3d, obs.vector_obs]]
+        value = self.model.critic_pass(obs_list)[0]['extrinsic']
+        return value.squeeze(-1)  # 确保输出形状正确
+
+
 class PPO_trainer:
     def __init__(self, cfg, args):
         self.cfg = cfg
@@ -95,87 +119,76 @@ class PPO_trainer:
         state_shape = []
         for key, space in train_envs.observation_space[0].items():
             state_shape.append(space.shape)
-        action_shape = train_envs.action_space[0].shape
+        action_space = train_envs.action_space[0]
+        self.action_shape = action_space.shape
+        self.build_actor_critic(model_path=args.pre_train_model, intial_model=args.intial_model)
 
-        self.build_actor_critic(state_shape, action_shape, device=cfg.params.config.device)
-        self._init_actor_critic()
-
-        self.policy: BasePolicy
         self.policy = PPOPolicy(
-            actor=self.actor,
-            critic=self.critic,
-            optim=self.optim,
-            dist_fn=self.dist,
-            action_space=train_envs.action_space[0],
-            deterministic_eval=self.cfg.params.config.deterministic_eval,
-            action_scaling=self.cfg.params.config.action_scaling,
+            self.actor,
+            self.critic,
+            self.optimizer,
+            dist_fn=self.dist_fn,
+            action_space=action_space,
+            vf_coef=0.5,
+            ent_coef=0.01,
+            max_grad_norm=0.5,
+            eps_clip=0.2,
+            value_clip=True,
+            gae_lambda=0.95,
+            discount_factor=0.99,
+            reward_normalization=True,
+            action_bound_method='clip',
+            advantage_normalization=True,
+            recompute_advantage=False
         )
 
-        self.train_collector = Collector(
-            policy=self.policy,
-            env=train_envs,
-            buffer=VectorReplayBuffer(self.cfg.params.config.ReplayBufferSize, len(train_envs)),
+        # 创建缓冲区
+        train_buffer = VectorReplayBuffer(
+            total_size=self.cfg.params.config.ReplayBufferSize,
+            buffer_num=self.cfg.params.config.num_envs
         )
 
-        self.test_collector = Collector(policy=self.policy, env=train_envs)
+        # 创建收集器
+        self.train_collector = Collector(self.policy, train_envs, train_buffer)
+        self.test_collector = Collector(self.policy, train_envs)
+
     def solver(self):
-        result = OnpolicyTrainer(
+        result = onpolicy_trainer(
             policy=self.policy,
             train_collector=self.train_collector,
             test_collector=self.test_collector,
             max_epoch=self.cfg.params.config.max_epochs,
             step_per_epoch=self.cfg.params.config.step_per_epochs,
+            step_per_collect=self.cfg.params.config.step_per_collect,  # 这里是 2000
             repeat_per_collect=self.cfg.params.config.repeat_per_collect,
             episode_per_test=self.cfg.params.config.episode_per_test,
             batch_size=self.cfg.params.config.batch_size,
-            step_per_collect=self.cfg.params.config.step_per_collect
-        ).run()
-
-    def _init_actor_critic(self):
-        torch.nn.init.constant_(self.actor.sigma_param, -0.5)
-        for m in self.actor_critic.modules():
-            if isinstance(m, torch.nn.Linear):
-                # orthogonal initialization
-                torch.nn.init.orthogonal_(m.weight, gain=np.sqrt(2))
-                torch.nn.init.zeros_(m.bias)
-        # do last policy layer scaling, this will make initial actions have (close to)
-        # 0 mean and std, and will help boost performances,
-        # see https://arxiv.org/abs/2006.05990, Fig.24 for details
-        for m in self.actor.mu.modules():
-            if isinstance(m, torch.nn.Linear):
-                torch.nn.init.zeros_(m.bias)
-                m.weight.data.copy_(0.01 * m.weight.data)
-
-    def build_actor_critic(self, state_shape, action_shape, device):
-        net_a = CustomNet(
-            state_shape,
-            hidden_sizes=[256, 128],
-            activation=nn.Tanh,
-            device=device,
         )
 
-        net_c = CustomNet(
-            state_shape,
-            hidden_sizes=[128, 128],
-            activation=nn.Tanh,
-            device=device,
-        )
+    def initialize_weights(self, model):
+        for m in model.modules():
+            if isinstance(m, nn.Linear):
+                nn.init.xavier_uniform_(m.weight)  # Xavier uniform initialization
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)  # 将偏置初始化为0
 
-        self.actor = ActorProb(
-            net_a,
-            action_shape,
-            device=device,
-            unbounded=True
-        ).to(device)
+    def build_actor_critic(self, model_path, intial_model=False):
+        actor_model = torch.load(model_path)["Policy"]
+        critic_model = torch.load(model_path)['Optimizer:critic']
+        if intial_model:
+            # 对比实验
+            self.initialize_weights(actor_model)
+            self.initialize_weights(critic_model)
 
-        self.critic = Critic(net_c, device=device).to(device)
-        self.actor_critic = ActorCritic(self.actor, self.critic)
+        self.actor = CustomActor(actor_model, self.action_shape)
+        self.critic = CustomCritic(critic_model)
 
-        # optimizer of the actor and the critic
-        self.optim = torch.optim.Adam(self.actor_critic.parameters(), lr=self.cfg.params.config.lr)
+        self.optimizer = torch.optim.Adam(list(self.actor.parameters()) + list(self.critic.parameters()), lr=self.cfg.params.config.lr, betas=self.cfg.params.config.betas)
 
-    def dist(self, loc: torch.Tensor, scale: torch.Tensor) -> Distribution:
-        return Independent(Normal(loc, scale), 1)
+    # 定义动作分布函数
+    def dist_fn(self, mean, log_std):
+        std = log_std.exp()
+        return torch.distributions.Normal(mean, std)
 
 
 class SHAC_trainer:
