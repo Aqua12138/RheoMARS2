@@ -149,8 +149,7 @@ class SHACPolicy:
         self.value_loss = np.inf
 
     def _setup_logging(self):
-        base_dir = os.path.dirname(os.path.dirname(project_dir))
-
+        base_dir = "/root/autodl-fs" # for autodl path
         self.log_dir = os.path.join(base_dir, 'logs')
         os.makedirs(self.log_dir, exist_ok=True)
         self.writer = SummaryWriter(os.path.join(self.log_dir, self.args.exp_name + '/log'))

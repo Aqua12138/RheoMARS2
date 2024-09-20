@@ -180,7 +180,7 @@ class PPO_trainer:
 
 class SHAC_trainer:
     def __init__(self, cfg, args):
-        train_envs = MyDummyVectorEnv([lambda: gym.make(cfg.params.env.name, seed=cfg.params.env.seed+i, loss=True, loss_cfg=cfg.params.loss, renderer_type=args.renderer_type, perc_type="sensor") for i in range(cfg.params.config.num_actors)])
+        train_envs = MyDummyVectorEnv([lambda: gym.make(cfg.params.env.name, loss=True, loss_cfg=cfg.params.loss, renderer_type=args.renderer_type, perc_type="sensor") for i in range(cfg.params.config.num_actors)])
 
         assert isinstance(train_envs.observation_space[0], gym.spaces.Dict)
         assert isinstance(train_envs.action_space[0], gym.spaces.Box)  # for mypy
