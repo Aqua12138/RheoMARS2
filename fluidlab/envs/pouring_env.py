@@ -49,7 +49,7 @@ class PouringEnv(FluidEnv):
             center=(0.5, 0.55, 0.5),
             height=0.07,
             radius=0.04,
-            material=WATER,
+            material=ICECREAM,
         )
 
     def setup_boundary(self):
@@ -118,7 +118,7 @@ class PouringEnv(FluidEnv):
         self.taichi_env.loss.update_target(target_num)
 
         # random mu
-        mu = np.random.uniform(0, 100)
+        mu = np.random.uniform(100, 300)
         self.taichi_env.simulator.update_mu(mu)
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)

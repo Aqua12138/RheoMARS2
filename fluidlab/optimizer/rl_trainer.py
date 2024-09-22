@@ -25,6 +25,12 @@ from fluidlab.optimizer.network.encoder import CustomNet, Critic
 import torch.nn.functional as F
 import traceback
 from tianshou.data import Batch
+from torch.utils.tensorboard import SummaryWriter
+from tianshou.utils import TensorboardLogger
+import sys
+
+project_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '.'))
+sys.path.append(project_dir)
 
 class MyDummyVectorEnv(DummyVectorEnv):
     def __init__(self, env_fns):
@@ -117,7 +123,7 @@ class CustomCritic(nn.Module):
 class PPO_trainer:
     def __init__(self, cfg, args):
         self.cfg = cfg
-        train_envs = DummyVectorEnv([lambda: gym.make(cfg.params.env.name, seed=cfg.params.env.seed, loss=True, loss_cfg=cfg.params.loss, renderer_type=args.renderer_type, perc_type="sensor") for _ in range(self.cfg.params.config.num_envs)])
+        train_envs = DummyVectorEnv([lambda: gym.make(cfg.params.env.name, loss=True, loss_cfg=cfg.params.loss, renderer_type=args.renderer_type, perc_type="sensor") for _ in range(self.cfg.params.config.num_envs)])
         assert isinstance(train_envs.observation_space[0], gym.spaces.Dict)
         assert isinstance(train_envs.action_space[0], gym.spaces.Box)
 
@@ -157,6 +163,13 @@ class PPO_trainer:
         self.train_collector = Collector(self.policy, train_envs, train_buffer)
         self.test_collector = Collector(self.policy, train_envs)
 
+        base_dir = os.path.dirname(os.path.dirname(project_dir))
+
+        self.log_dir = os.path.join(base_dir, 'logs')
+        os.makedirs(self.log_dir, exist_ok=True)
+        writer = SummaryWriter(os.path.join(self.log_dir, args.exp_name + '/log'))
+
+        self.logger = TensorboardLogger(writer)
     def solver(self):
         # 开始训练
         try:
@@ -170,6 +183,7 @@ class PPO_trainer:
                 repeat_per_collect=self.cfg.params.config.repeat_per_collect,
                 episode_per_test=self.cfg.params.config.episode_per_test,
                 batch_size=self.cfg.params.config.batch_size,
+                logger = self.logger,
             )
         except Exception as e:
             print("An exception occurred:")

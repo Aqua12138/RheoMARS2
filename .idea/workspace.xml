@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/fluidlab/run.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/macros.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/macros.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/configs/ppo/pour.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/ppo/pour.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/pouring_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -378,7 +381,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>119</line>
+          <line>125</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -438,7 +441,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>45</line>
+          <line>51</line>
           <option name="timeStamp" value="154" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -488,7 +491,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>210</line>
+          <line>224</line>
           <option name="timeStamp" value="212" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -498,12 +501,12 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>204</line>
+          <line>218</line>
           <option name="timeStamp" value="238" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>118</line>
+          <line>124</line>
           <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -583,7 +586,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>284</line>
+          <line>298</line>
           <option name="timeStamp" value="350" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -770,7 +773,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>123</line>
+          <line>129</line>
           <option name="timeStamp" value="495" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -790,7 +793,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>162</line>
+          <line>175</line>
           <option name="timeStamp" value="500" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -810,7 +813,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/optimizer/rl_trainer.py</url>
-          <line>99</line>
+          <line>105</line>
           <option name="timeStamp" value="511" />
         </line-breakpoint>
       </breakpoints>

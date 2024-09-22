@@ -12,15 +12,15 @@ params:
       is_soft_contact: False
 
   config:
-    deterministic_eval: False
+    deterministic_eval: True
     action_scaling: False
     ReplayBufferSize: 20000
     max_epochs: 60
-    step_per_epochs: 224
-    repeat_per_collect: 1
+    step_per_epochs: 672
+    repeat_per_collect: 3
     episode_per_test: 1
     batch_size: 224
-    step_per_collect: 224
+    step_per_collect: 672
     num_envs: 1
     lr: 0.00005
     betas: [0.9, 0.999]

@@ -134,7 +134,7 @@ FRICTION = {
     BOWL    : 5.0,
     LADDLE  : 0.1,
     CONE    : 8.0,
-    BOTTLE  : 0.1,
+    BOTTLE  : 0.3,
     PILLAR  : 0.0,
     STIRRER : 8.0,
     PLATE   : 0.1,
