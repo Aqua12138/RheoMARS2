@@ -1,12 +1,12 @@
 params:
   env:
-    name: Pouring-v0
-    seed: 567
+    name: Accumulation-v0
+    seed: 123
   loss:
     name: SHACLoss
-    target_file: Pouring.pkl
+    target_file: Accumulation.pkl
     weight:
-      density: 21
+      density: 0
       sdf: 21
       contact: 0
       is_soft_contact: False
@@ -23,10 +23,10 @@ params:
     gamma: 0.99
     betas: [0.9, 0.999] # adam
     max_epochs: 2000
-    steps_num: 224
+    steps_num: 640
     grad_norm: 1
     truncate_grads: True
-    num_actors: 1
+    num_actors: 2
     save_interval: 400
     device: cuda:0
 

@@ -18,7 +18,7 @@ params:
     max_epochs: 60
     step_per_epochs: 672
     repeat_per_collect: 3
-    episode_per_test: 1
+    episode_per_test: 10
     batch_size: 224
     step_per_collect: 672
     num_envs: 1

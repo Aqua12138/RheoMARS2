@@ -124,10 +124,10 @@ class Static(Mesh):
     @ti.func
     def is_collide(self, pos_world):
         flag = 0
-        if ti.static(self.has_dynamics):
-            signed_dist = self.sdf(pos_world)
-            if signed_dist <= 0:
-                flag = 1
+        # if ti.static(self.has_dynamics):
+        signed_dist = self.sdf(pos_world)
+        if signed_dist <= 0:
+            flag = 1
 
         return flag
 

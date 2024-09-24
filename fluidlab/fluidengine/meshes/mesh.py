@@ -57,20 +57,20 @@ class Mesh:
             # if vcolor file does not exist, get color based on material
             self.colors_np = np.tile([COLOR[self.material]], [self.n_vertices, 1]).astype(np.float32)
 
-        if self.has_dynamics:
+        # if self.has_dynamics:
             # sdf
-            self.friction = FRICTION[self.material]
-            sdf_data = pkl.load(open(self.processed_sdf_path, 'rb'))
-            self.sdf_voxels_np = sdf_data['voxels'].astype(DTYPE_NP)
-            self.sdf_voxels_res = self.sdf_voxels_np.shape[0]
-            self.T_mesh_to_voxels_np = sdf_data['T_mesh_to_voxels'].astype(DTYPE_NP)
+        self.friction = FRICTION[self.material]
+        sdf_data = pkl.load(open(self.processed_sdf_path, 'rb'))
+        self.sdf_voxels_np = sdf_data['voxels'].astype(DTYPE_NP)
+        self.sdf_voxels_res = self.sdf_voxels_np.shape[0]
+        self.T_mesh_to_voxels_np = sdf_data['T_mesh_to_voxels'].astype(DTYPE_NP)
 
     def process_mesh(self):
         self.raw_file_path       = get_raw_mesh_path(self.raw_file)
         self.raw_file_vis_path   = get_raw_mesh_path(self.raw_file_vis)
         self.processed_file_path = get_processed_mesh_path(self.raw_file, self.raw_file_vis)
-        if self.has_dynamics:
-            self.processed_sdf_path = get_processed_sdf_path(self.raw_file, self.sdf_res)
+        # if self.has_dynamics:
+        self.processed_sdf_path = get_processed_sdf_path(self.raw_file, self.sdf_res)
 
         # clean up mesh
         if not os.path.exists(self.processed_file_path):
@@ -84,7 +84,7 @@ class Mesh:
             print(f'===> Processed mesh saved as {self.processed_file_path}.')
 
         # generate sdf
-        if self.has_dynamics and not os.path.exists(self.processed_sdf_path):
+        # if self.has_dynamics and not os.path.exists(self.processed_sdf_path):
             print(f'===> Computing sdf for {self.raw_file_path}. This might take minutes...')
             raw_mesh           = load_mesh(self.raw_file_path)
             processed_mesh_sdf = cleanup_mesh(normalize_mesh(raw_mesh))
@@ -118,11 +118,11 @@ class Mesh:
         self.faces.from_numpy(self.faces_np)
         self.colors.from_numpy(self.colors_np)
 
-        if self.has_dynamics:
-            self.T_mesh_to_voxels_np = self.T_mesh_to_voxels_np @ np.linalg.inv(T_init)
-            self.sdf_voxels          = ti.field(dtype=DTYPE_TI, shape=self.sdf_voxels_np.shape)
-            self.T_mesh_to_voxels    = ti.Matrix.field(4, 4, dtype=DTYPE_TI, shape=())
+        # if self.has_dynamics:
+        self.T_mesh_to_voxels_np = self.T_mesh_to_voxels_np @ np.linalg.inv(T_init)
+        self.sdf_voxels          = ti.field(dtype=DTYPE_TI, shape=self.sdf_voxels_np.shape)
+        self.T_mesh_to_voxels    = ti.Matrix.field(4, 4, dtype=DTYPE_TI, shape=())
 
-            self.sdf_voxels.from_numpy(self.sdf_voxels_np)
-            self.T_mesh_to_voxels.from_numpy(self.T_mesh_to_voxels_np)
+        self.sdf_voxels.from_numpy(self.sdf_voxels_np)
+        self.T_mesh_to_voxels.from_numpy(self.T_mesh_to_voxels_np)
 
