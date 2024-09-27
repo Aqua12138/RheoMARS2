@@ -15,7 +15,7 @@ class FluidEnv(gym.Env):
     '''
     Base env class.
     '''    
-    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=1280):
+    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=128):
         if seed is not None:
             self.seed(seed)
 
@@ -123,13 +123,14 @@ class FluidEnv(gym.Env):
             raise TypeError("Unsupported observation type")
     def reset(self):
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
+        self.taichi_env.reset_grad()
         info = {}
         return self._get_obs(), info
 
     # //------------------ shac -----------------
     def reset_grad(self):
         self._current_state["grad_enabled"] = True
-        self.taichi_env.set_state(**self._current_state)
+        self.taichi_env.set_state(self._current_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         self.taichi_env.reset_grad()
         return self._get_obs()
 
@@ -217,7 +218,7 @@ class FluidEnv(gym.Env):
             done = True
 
         info = dict()
-        # self.render()
+        self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):

@@ -13,9 +13,10 @@ import copy
 
 class AccumulationEnv(FluidEnv):
     def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics"):
-        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=640)
+        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=320)
         self.action_range = np.array([-0.007, 0.007])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
+        self.max_episode_length = 320
 
     def setup_agent(self):
         agent_cfg = CfgNode(new_allowed=True)
@@ -117,7 +118,7 @@ class AccumulationEnv(FluidEnv):
             done = True
 
         info = dict()
-        # self.render()
+        self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):
@@ -133,8 +134,8 @@ class AccumulationEnv(FluidEnv):
         self.taichi_env.step_grad(action)
     def reset(self):
         # Generate the first random number
-        rheo_lower = (0.2, 0.1, 0.6)
-        rheo_upper = (0.8, 0.1, 0.8)
+        rheo_lower = (0.5, 0.1, 0.7)
+        rheo_upper = (0.5, 0.1, 0.7)
         random_pos = np.random.uniform(rheo_lower, rheo_upper)
 
         rheo_pos = self.rheo_pos
@@ -142,13 +143,13 @@ class AccumulationEnv(FluidEnv):
         self.rheo_pos += delta_pos
         self._init_state['state']['x'] += delta_pos
 
-        agent_lower = (0.2, 0.13, 0.2)
-        agent_upper = (0.8, 0.5, 0.8)
+        agent_lower = (0.5, 0.2, 0.7)
+        agent_upper = (0.5, 0.2, 0.7)
         random_pos = np.random.uniform(agent_lower, agent_upper)
         self._init_state['state']['agent'][0][0:3] = random_pos
 
 
-        target_num = np.random.randint(0, 100)
+        target_num = 0
         target_pos = pkl.load(open(self.target_file, 'rb'))['statics'][target_num][0]
         self.taichi_env.statics.statics[0].set_pos(
             position=np.array(target_pos),

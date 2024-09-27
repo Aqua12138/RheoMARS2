@@ -13,9 +13,10 @@ import copy
 
 class PouringEnv(FluidEnv):
     def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics"):
-        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=224)
+        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=32)
         self.action_range = np.array([-0.007, 0.007])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
+        self.max_episode_length = 224
 
     def setup_agent(self):
         agent_cfg = CfgNode(new_allowed=True)
@@ -98,7 +99,7 @@ class PouringEnv(FluidEnv):
         return GatheringPolicy(optim_cfg, init_range, self.agent.action_dim, self.horizon, self.action_range)
     def reset(self):
         # Generate the first random number
-        target_num = np.random.randint(0, 100)
+        target_num = 0
         lower = (0.3, 0.4, 0.3)
         upper = (0.7, 0.7, 0.7)
         random_pos = np.random.uniform(lower, upper)

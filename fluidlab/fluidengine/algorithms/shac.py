@@ -91,8 +91,10 @@ class SHACPolicy:
         self.num_envs = self.envs.env_num
         self.num_obs = self.envs.observation_space[0]
         self.num_actions = self.envs.action_space[0].shape
-        self.max_episode_length = self.envs.get_env_attr("horizon")[0]
+        self.max_episode_length = self.envs.get_env_attr("max_episode_length")[0]
+        self.steps_num = self.envs.get_env_attr("horizon")[0]
         self.batch_size = self.num_envs * self.steps_num // self.num_batch
+
 
     def _setup_hyperparameters(self):
         # Extract hyperparameters from config and set default values
@@ -100,7 +102,6 @@ class SHACPolicy:
         if self.critic_method == 'td-lambda':
             self.lam = self.cfg.params.config.get('lam', 0.95)
 
-        self.steps_num = self.cfg.params.config.get('steps_num', 32)
         self.max_epochs = self.cfg.params.config.get('max_epochs', 100)
         self.actor_lr = float(self.cfg.params.config.get('actor_learning_rate', 1e-3))
         self.critic_lr = float(self.cfg.params.config.get('critic_learning_rate', 1e-3))
@@ -188,7 +189,6 @@ class SHACPolicy:
 
         # collect data for critic training and simulation forward
         for i in range(self.steps_num):
-            self.episode_length += 1
             with torch.no_grad():
                 self.obs_buf_grid2D[i] = obs['gridsensor2d'].clone()
                 self.obs_buf_grid3D[i] = obs['gridsensor3d'].clone()
@@ -247,17 +247,17 @@ class SHACPolicy:
             # collect episode loss
             with torch.no_grad():
                 self.episode_reward += reward
-                if self.episode_length == self.max_episode_length:
+                if self.episode_length == self.max_episode_length-1:
                     self.episode_reward_mean = torch.sum(self.episode_reward) / self.num_envs
                     for i in range(self.num_envs):
                         self.episode_reward[i] = 0.
-
+            self.episode_length += 1
         self.envs.compute_actor_loss()
         # save the sim state
         self.envs.save_state()
 
         # backward
-        self.envs.set_next_state_grad(state_grads)  # for critic grad
+        # self.envs.set_next_state_grad(state_grads)  # for critic grad
         self.envs.compute_actor_loss_grad()
 
         for i in range(self.steps_num - 1, -1, -1):
