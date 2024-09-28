@@ -99,7 +99,7 @@ class PouringEnv(FluidEnv):
         return GatheringPolicy(optim_cfg, init_range, self.agent.action_dim, self.horizon, self.action_range)
     def reset(self):
         # Generate the first random number
-        target_num = np.random.randint(0, 100)
+        target_num = 0
         lower = (0.2, 0.4, 0.2)
         upper = (0.7, 0.7, 0.7)
         random_pos = np.random.uniform(lower, upper)

@@ -166,6 +166,6 @@ class Agent:
 
     def set_next_state_grad(self, grad):
         self.effectors[0].set_next_state_grad(self.sim.cur_substep_local, grad["vector_obs"])
-        self.sensors[0].set_next_state_grad(self.sim.cur_step_global, grad["grid_sensor3d"])
-        self.sensors[1].set_next_state_grad(self.sim.cur_step_global, grad["grid_sensor2d"])
+        # self.sensors[0].set_next_state_grad(self.sim.cur_step_global, grad["grid_sensor3d"])
+        # self.sensors[1].set_next_state_grad(self.sim.cur_step_global, grad["grid_sensor2d"])
 

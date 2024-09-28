@@ -129,16 +129,16 @@ class SHACPolicy:
     def _initialize_buffers(self):
         # Initialize buffers for observations, rewards, etc.
         # replay buffer
-        self.obs_buf_grid2D = torch.zeros((self.steps_num, self.num_envs, *self.num_obs["gridsensor2d"].shape),
+        self.obs_buf_grid2D = torch.zeros((self.max_episode_length, self.num_envs, *self.num_obs["gridsensor2d"].shape),
                                           dtype=torch.float32, device=self.device)
-        self.obs_buf_grid3D = torch.zeros((self.steps_num, self.num_envs, *self.num_obs["gridsensor3d"].shape),
+        self.obs_buf_grid3D = torch.zeros((self.max_episode_length, self.num_envs, *self.num_obs["gridsensor3d"].shape),
                                           dtype=torch.float32, device=self.device)
-        self.obs_buf_vector = torch.zeros((self.steps_num, self.num_envs, *self.num_obs["vector_obs"].shape),
+        self.obs_buf_vector = torch.zeros((self.max_episode_length, self.num_envs, *self.num_obs["vector_obs"].shape),
                                           dtype=torch.float32, device=self.device)
-        self.rew_buf = torch.zeros((self.steps_num, self.num_envs), dtype=torch.float32, device=self.device)
-        self.done_mask = torch.zeros((self.steps_num, self.num_envs), dtype=torch.float32, device=self.device)
-        self.next_values = torch.zeros((self.steps_num, self.num_envs), dtype=torch.float32, device=self.device)
-        self.target_values = torch.zeros((self.steps_num, self.num_envs), dtype=torch.float32, device=self.device)
+        self.rew_buf = torch.zeros((self.max_episode_length, self.num_envs), dtype=torch.float32, device=self.device)
+        self.done_mask = torch.zeros((self.max_episode_length, self.num_envs), dtype=torch.float32, device=self.device)
+        self.next_values = torch.zeros((self.max_episode_length, self.num_envs), dtype=torch.float32, device=self.device)
+        self.target_values = torch.zeros((self.max_episode_length, self.num_envs), dtype=torch.float32, device=self.device)
 
         # loss variables
         self.episode_reward = torch.zeros(self.num_envs, dtype=torch.float32, device=self.device)
@@ -190,9 +190,9 @@ class SHACPolicy:
         # collect data for critic training and simulation forward
         for i in range(self.steps_num):
             with torch.no_grad():
-                self.obs_buf_grid2D[i] = obs['gridsensor2d'].clone()
-                self.obs_buf_grid3D[i] = obs['gridsensor3d'].clone()
-                self.obs_buf_vector[i] = obs['vector_obs'].clone()
+                self.obs_buf_grid2D[self.episode_length] = obs['gridsensor2d'].clone()
+                self.obs_buf_grid3D[self.episode_length] = obs['gridsensor3d'].clone()
+                self.obs_buf_vector[self.episode_length] = obs['vector_obs'].clone()
 
             # simple actions
             # logits, hidden = self.actor(obs)
@@ -201,7 +201,7 @@ class SHACPolicy:
             grid_sensor2d = obs["gridsensor2d"]
             grid_sensor3d = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action = self.actor([grid_sensor2d, grid_sensor3d, vector_obs])[4] # 2:random 4 detemistict
+            action = self.actor([grid_sensor2d, grid_sensor3d, vector_obs])[2] # 2:random 4 detemistict
             actions[i] = action
             if torch.isnan(action).any():
                 print("The tensor contains NaN values")
@@ -244,17 +244,17 @@ class SHACPolicy:
                     normalized_array = np.zeros_like(state_grad['grid_sensor2d'])
 
                 # 按照环境进行分配
-                state_grads = [{key: -value[i] for key, value in state_grad.items()} for i in range(self.num_envs)]
+                state_grads = [{key: value[i] for key, value in state_grad.items()} for i in range(self.num_envs)]
 
             # collect data for critic training
             gamma = gamma * self.gamma
-            self.rew_buf[i] = reward
+            self.rew_buf[self.episode_length] = reward
             if i < self.steps_num - 1:
-                self.done_mask[i] = done
+                self.done_mask[i, :] = done
             else:
                 self.done_mask[i, :] = 1.
             with torch.no_grad():
-                self.next_values[i] = next_values[i + 1].clone()
+                self.next_values[self.episode_length] = next_values[i + 1].clone()
 
             # collect episode loss
             with torch.no_grad():
@@ -279,7 +279,8 @@ class SHACPolicy:
 
         action_grads = self.envs.get_action_grad([self.episode_length, self.episode_length - self.steps_num])[:, 0:-1, :]
 
-
+        print(actions[-1, 0, :])
+        print(action_grads[0, -1, :])
         # 定义一个阈值，设为 1
         # max_norm = 0.001
         #
@@ -305,7 +306,7 @@ class SHACPolicy:
             Ai = torch.zeros(self.num_envs, dtype=torch.float32, device=self.device)
             Bi = torch.zeros(self.num_envs, dtype=torch.float32, device=self.device)
             lam = torch.ones(self.num_envs, dtype=torch.float32, device=self.device)
-            for i in reversed(range(self.steps_num)):
+            for i in reversed(range(self.max_episode_length)):
                 lam = lam * self.lam * (1. - self.done_mask[i]) + self.done_mask[i]
                 Ai = (1.0 - self.done_mask[i]) * (
                             self.lam * self.gamma * Ai + self.gamma * self.next_values[i] + (1. - lam) / (
@@ -477,25 +478,25 @@ class SHACPolicy:
                         time_start_epoch = time.time()
                         # train actor
                         self.train_actor()
-                        # prepare dataset of critic training
-                        dataset = self.get_dataset()
-                        # train critic
-                        self.train_critic(dataset)
+
                         time_end_epoch = time.time()
 
                         fps = self.steps_num * self.num_envs / (time_end_epoch - time_start_epoch)
                         pbar_inner.write(
-                            f'Batch {i + 1}/{self.max_episode_length // self.steps_num}: FPS={fps:.2f}, Value Loss={self.value_loss:.4f}, Grad Norm Before Clip={self.grad_norm_before_clip:.4f}, Reward={self.episode_reward_mean:.4f}')
+                            f'Batch {i + 1}/{self.max_episode_length // self.steps_num}: FPS={fps:.2f}, Grad Norm Before Clip={self.grad_norm_before_clip:.4f}, Reward={self.episode_reward_mean:.4f}')
                         pbar_inner.update(1)
 
-                        self.writer.add_scalar('value_loss/step', self.value_loss, self.step_count)
-                        self.writer.add_scalar('value_loss/iter', self.value_loss, self.iter_count)
+                # train critic
+                # prepare dataset of critic training
+                dataset = self.get_dataset()
+                self.train_critic(dataset)
+                self.writer.add_scalar('value_loss/epoch', self.value_loss, epoch)
 
                 epoch_end_time = time.time()
                 epoch_duration = epoch_end_time - epoch_start_time
                 eta_total = epoch_duration * (self.max_epochs - epoch - 1)
                 pbar_outer.write(
-                    f'Epoch {epoch + 1}/{self.max_epochs}: Duration={epoch_duration:.2f} sec, ETA={eta_total:.2f} sec, Episode Reward Mean={self.episode_reward_mean:.2f}, Best Policy Reward={self.best_policy_reward:.2f}')
+                    f'Epoch {epoch + 1}/{self.max_epochs}: Duration={epoch_duration:.2f} sec, ETA={eta_total:.2f} sec, Episode Reward Mean={self.episode_reward_mean:.2f}, Best Policy Reward={self.best_policy_reward:.2f}, Value Loss={self.value_loss:.4f}')
                 pbar_outer.update(1)
 
                 self.logging(epoch)
