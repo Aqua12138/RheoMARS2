@@ -148,6 +148,7 @@ class SHACPolicy:
         self._episode_reward_mean = -100000
         self.lr_patience = 0
         self.value_loss = np.inf
+        self.actor_loss = np.inf
 
     def _setup_logging(self):
         base_dir = os.path.dirname(os.path.dirname(project_dir))
@@ -186,7 +187,8 @@ class SHACPolicy:
             obs = self.envs.reset_grad()
 
         obs = merge_dict_array(obs, device=self.device)
-
+        obs_list = [[obs['gridsensor2d'], obs['gridsensor3d'], obs['vector_obs']]]
+        next_values[0] = self.target_critic.critic_pass(obs_list)[0]['extrinsic']
         # collect data for critic training and simulation forward
         for i in range(self.steps_num):
             with torch.no_grad():
@@ -201,7 +203,9 @@ class SHACPolicy:
             grid_sensor2d = obs["gridsensor2d"]
             grid_sensor3d = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action = self.actor([grid_sensor2d, grid_sensor3d, vector_obs])[2] # 2:random 4 detemistict
+            action, log_probs, entropies, memories = self.actor.get_action_and_stats([grid_sensor2d, grid_sensor3d, vector_obs])# 2:random 4 detemistict
+            action = action[0]
+            log_probs = log_probs[0]
             actions[i] = action
             if torch.isnan(action).any():
                 print("The tensor contains NaN values")
@@ -212,10 +216,6 @@ class SHACPolicy:
             reward = torch.from_numpy(reward).to(self.device)
             done = torch.from_numpy(done).to(self.device)
 
-            obs['gridsensor2d'].requires_grad_(True)
-            obs['gridsensor3d'].requires_grad_(True)
-            obs['vector_obs'].requires_grad_(True)
-
             obs_list = [[obs['gridsensor2d'], obs['gridsensor3d'], obs['vector_obs']]]
             next_values[i + 1] = self.target_critic.critic_pass(obs_list)[0]['extrinsic']
             # cv2.imshow('3d grid sensor', obs["gridsensor2d"].detach().cpu().numpy()[0, ...])
@@ -224,32 +224,15 @@ class SHACPolicy:
                 print('next value error')
                 raise ValueError
 
-            if i == self.steps_num - 1:
-                actor_loss = actor_loss + (- self.gamma * gamma * next_values[i + 1, :]).sum()
-                actor_loss.backward()
-                # 传入taichi的obs对应变量中
-                state_grad = {}
-                state_grad['grid_sensor2d'] = obs['gridsensor2d'].grad.cpu().numpy()
-                state_grad['grid_sensor3d'] = obs['gridsensor3d'].grad.cpu().numpy()
-                state_grad['vector_obs'] = obs['vector_obs'].grad.cpu().numpy()
-                # 计算最小值和最大值
-                min_val = np.min(state_grad['grid_sensor2d'])
-                max_val = np.max(state_grad['grid_sensor2d'])
-
-                # 检查最大值和最小值是否相同，以避免除零错误
-                if max_val > min_val:
-                    normalized_array = (state_grad['grid_sensor2d'] - min_val) / (max_val - min_val)
-                else:
-                    # 如果所有值都相同，则无法归一化，可以选择将数组设置为全零或处理其他方式
-                    normalized_array = np.zeros_like(state_grad['grid_sensor2d'])
-
-                # 按照环境进行分配
-                state_grads = [{key: value[i] for key, value in state_grad.items()} for i in range(self.num_envs)]
+            with torch.no_grad():
+                td_target = reward + self.gamma * next_values[i+1]
+                advantage = td_target - next_values[i]
+            actor_loss = actor_loss - (advantage*log_probs).sum()
 
             # collect data for critic training
             gamma = gamma * self.gamma
             self.rew_buf[self.episode_length] = reward
-            if i < self.steps_num - 1:
+            if i < self.max_episode_length - 1:
                 self.done_mask[i, :] = done
             else:
                 self.done_mask[i, :] = 1.
@@ -269,7 +252,7 @@ class SHACPolicy:
         self.envs.save_state()
 
         # backward
-        self.envs.set_next_state_grad(state_grads)  # for critic grad
+        # self.envs.set_next_state_grad(state_grads)  # for critic grad
         self.envs.compute_actor_loss_grad()
 
         for i in range(self.steps_num - 1, -1, -1):
@@ -279,8 +262,8 @@ class SHACPolicy:
 
         action_grads = self.envs.get_action_grad([self.episode_length, self.episode_length - self.steps_num])[:, 0:-1, :]
 
-        print(actions[-1, 0, :])
-        print(action_grads[0, -1, :])
+        # print(actions[-1, 0, :])
+        # print(action_grads[0, -1, :])
         # 定义一个阈值，设为 1
         # max_norm = 0.001
         #
@@ -296,7 +279,10 @@ class SHACPolicy:
         if torch.isnan(torch.tensor(action_grads, dtype=torch.float32).to(self.device).permute(1, 0, 2)).any():
             print("The tensor contains NaN values")
             action_grads = np.zeros_like(action_grads)
-        return actions, torch.tensor(action_grads, dtype=torch.float32).to(self.device).permute(1, 0, 2)
+
+        self.actor_loss = actor_loss.detach().cpu().item()
+        actor_loss /= self.num_envs
+        return actions, torch.tensor(action_grads, dtype=torch.float32).to(self.device).permute(1, 0, 2), actor_loss
 
     @torch.no_grad()
     def compute_target_values(self):
@@ -332,8 +318,10 @@ class SHACPolicy:
         self.time_report.start_timer("compute actor loss")
 
         self.time_report.start_timer("forward and backward simulation")
-        actions, action_grads = self.compute_actor_loss()
+        actions, action_grads, actor_loss = self.compute_actor_loss()
+        actor_loss.backward(retain_graph=True)
         actions.backward(action_grads)
+
         self.time_report.end_timer("forward and backward simulation")
 
         with torch.no_grad():
@@ -483,7 +471,7 @@ class SHACPolicy:
 
                         fps = self.steps_num * self.num_envs / (time_end_epoch - time_start_epoch)
                         pbar_inner.write(
-                            f'Batch {i + 1}/{self.max_episode_length // self.steps_num}: FPS={fps:.2f}, Grad Norm Before Clip={self.grad_norm_before_clip:.4f}, Reward={self.episode_reward_mean:.4f}')
+                            f'Batch {i + 1}/{self.max_episode_length // self.steps_num}: FPS={fps:.2f}, Grad Norm Before Clip={self.grad_norm_before_clip:.4f}, Actor loss={self.actor_loss:.4f}')
                         pbar_inner.update(1)
 
                 # train critic
