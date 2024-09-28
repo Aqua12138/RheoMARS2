@@ -44,7 +44,7 @@ import json
 VecEnvTensorObs = Union[torch.Tensor, Dict[str, torch.Tensor], Tuple[torch.Tensor, ...]]
 VecEnvStepReturn = Tuple[VecEnvTensorObs, torch.Tensor, torch.Tensor, List[Dict]]
 VecEnvIndices = Union[None, int, Iterable[int]]
-
+import cv2
 
 def merge_dict_array(dict_array, device='cuda:0'):
     keys = dict_array[0].keys()
@@ -218,6 +218,8 @@ class SHACPolicy:
 
             obs_list = [[obs['gridsensor2d'], obs['gridsensor3d'], obs['vector_obs']]]
             next_values[i + 1] = self.target_critic.critic_pass(obs_list)[0]['extrinsic']
+            # cv2.imshow('3d grid sensor', obs["gridsensor2d"].detach().cpu().numpy()[0, ...])
+            # cv2.waitKey(1)
             if (next_values[i + 1] > 1e6).sum() > 0 or (next_values[i + 1] < -1e6).sum() > 0:
                 print('next value error')
                 raise ValueError
@@ -230,9 +232,19 @@ class SHACPolicy:
                 state_grad['grid_sensor2d'] = obs['gridsensor2d'].grad.cpu().numpy()
                 state_grad['grid_sensor3d'] = obs['gridsensor3d'].grad.cpu().numpy()
                 state_grad['vector_obs'] = obs['vector_obs'].grad.cpu().numpy()
+                # 计算最小值和最大值
+                min_val = np.min(state_grad['grid_sensor2d'])
+                max_val = np.max(state_grad['grid_sensor2d'])
+
+                # 检查最大值和最小值是否相同，以避免除零错误
+                if max_val > min_val:
+                    normalized_array = (state_grad['grid_sensor2d'] - min_val) / (max_val - min_val)
+                else:
+                    # 如果所有值都相同，则无法归一化，可以选择将数组设置为全零或处理其他方式
+                    normalized_array = np.zeros_like(state_grad['grid_sensor2d'])
 
                 # 按照环境进行分配
-                state_grads = [{key: value[i] for key, value in state_grad.items()} for i in range(self.num_envs)]
+                state_grads = [{key: -value[i] for key, value in state_grad.items()} for i in range(self.num_envs)]
 
             # collect data for critic training
             gamma = gamma * self.gamma
@@ -257,7 +269,7 @@ class SHACPolicy:
         self.envs.save_state()
 
         # backward
-        # self.envs.set_next_state_grad(state_grads)  # for critic grad
+        self.envs.set_next_state_grad(state_grads)  # for critic grad
         self.envs.compute_actor_loss_grad()
 
         for i in range(self.steps_num - 1, -1, -1):
@@ -265,8 +277,7 @@ class SHACPolicy:
                 actions_clone = actions[i].clone().detach().cpu().numpy()
             self.envs.step_grad(actions_clone)
 
-        action_grads = self.envs.get_action_grad([self.episode_length, self.episode_length - self.steps_num])[:, 0:-1,
-                       :]
+        action_grads = self.envs.get_action_grad([self.episode_length, self.episode_length - self.steps_num])[:, 0:-1, :]
 
 
         # 定义一个阈值，设为 1
