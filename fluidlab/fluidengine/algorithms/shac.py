@@ -169,125 +169,120 @@ class SHACPolicy:
     # ----------------- train -----------------
 
     def compute_actor_loss(self):
-        # critic data
-        gamma = torch.ones(self.num_envs, dtype=torch.float32, device=self.device)  # debug & critic train
-        next_values = torch.zeros((self.steps_num + 1, self.num_envs), dtype=torch.float32,
-                                  device=self.device)  # critic train
-        actor_loss = torch.tensor(0., dtype=torch.float32, device=self.device)  # debug
+        # Hyperparameters
+        entropy_coef = 0.01  # Entropy coefficient for regularization, adjust as needed
+
+        # Initialize buffers
+        log_probs_buffer = []
+        entropies_buffer = []
+        values_buffer = []
+
         actions = torch.zeros((self.steps_num, self.num_envs, *self.num_actions), dtype=torch.float32,
                               device=self.device)
 
+        # Reset environment if needed
         if self.episode_length == self.max_episode_length or self.episode_length == 0:
-            # reset enviroment
             self.episode_length = 0
             self.envs.set_env_attr("grad_enabled", True)
             obs, info = self.envs.reset()
         else:
-            # reset grad
             obs = self.envs.reset_grad()
 
         obs = merge_dict_array(obs, device=self.device)
         obs_list = [[obs['gridsensor2d'], obs['gridsensor3d'], obs['vector_obs']]]
-        next_values[0] = self.target_critic.critic_pass(obs_list)[0]['extrinsic']
-        # collect data for critic training and simulation forward
-        for i in range(self.steps_num):
-            with torch.no_grad():
-                self.obs_buf_grid2D[self.episode_length] = obs['gridsensor2d'].clone()
-                self.obs_buf_grid3D[self.episode_length] = obs['gridsensor3d'].clone()
-                self.obs_buf_vector[self.episode_length] = obs['vector_obs'].clone()
 
-            # simple actions
-            # logits, hidden = self.actor(obs)
-            # dist = self.dist_fn(*logits)
-            # action = dist.rsample() # contain grad_fn
+        # Rollout loop
+        for i in range(self.steps_num):
+            # Store observations for Critic training
+            self.obs_buf_grid2D[self.episode_length] = obs['gridsensor2d'].clone()
+            self.obs_buf_grid3D[self.episode_length] = obs['gridsensor3d'].clone()
+            self.obs_buf_vector[self.episode_length] = obs['vector_obs'].clone()
+
+            # Get action and stats from Actor
             grid_sensor2d = obs["gridsensor2d"]
             grid_sensor3d = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action, log_probs, entropies, memories = self.actor.get_action_and_stats([grid_sensor2d, grid_sensor3d, vector_obs])# 2:random 4 detemistict
+            action, log_prob, entropy, _ = self.actor.get_action_and_stats([grid_sensor2d, grid_sensor3d, vector_obs])
+
             action = action[0]
-            log_probs = log_probs[0]
+            log_prob = log_prob[0]
+            entropy = entropy[0]
+
             actions[i] = action
-            if torch.isnan(action).any():
-                print("The tensor contains NaN values")
+            log_probs_buffer.append(log_prob)
+            entropies_buffer.append(entropy)
+
+            # Get value estimate from Critic
+            obs_list = [[grid_sensor2d, grid_sensor3d, vector_obs]]
+            value = self.critic.critic_pass(obs_list)[0]['extrinsic']
+            values_buffer.append(value)
+
+            # Interact with the environment
             with torch.no_grad():
-                actions_clone = action.clone().detach().cpu().numpy()
-            obs, reward, done, done, info = self.envs.step(actions_clone)
+                action_cpu = action.clone().detach().cpu().numpy()
+            obs, reward, done, _, info = self.envs.step(action_cpu)
             obs = merge_dict_array(obs, device=self.device)
             reward = torch.from_numpy(reward).to(self.device)
             done = torch.from_numpy(done).to(self.device)
 
-            obs_list = [[obs['gridsensor2d'], obs['gridsensor3d'], obs['vector_obs']]]
-            next_values[i + 1] = self.target_critic.critic_pass(obs_list)[0]['extrinsic']
-            # cv2.imshow('3d grid sensor', obs["gridsensor2d"].detach().cpu().numpy()[0, ...])
-            # cv2.waitKey(1)
-            if (next_values[i + 1] > 1e6).sum() > 0 or (next_values[i + 1] < -1e6).sum() > 0:
-                print('next value error')
-                raise ValueError
-
-            with torch.no_grad():
-                td_target = reward + self.gamma * next_values[i+1]
-                advantage = td_target - next_values[i]
-            actor_loss = actor_loss - (advantage*log_probs).sum()
-
-            # collect data for critic training
-            gamma = gamma * self.gamma
+            # Collect data for Critic
             self.rew_buf[self.episode_length] = reward
-            if i < self.max_episode_length - 1:
-                self.done_mask[i, :] = done
-            else:
-                self.done_mask[i, :] = 1.
-            with torch.no_grad():
-                self.next_values[self.episode_length] = next_values[i + 1].clone()
+            self.done_mask[self.episode_length, :] = done
 
-            # collect episode loss
-            with torch.no_grad():
-                self.episode_reward += reward
-                if self.episode_length == self.max_episode_length-1:
-                    self.episode_reward_mean = torch.sum(self.episode_reward) / self.num_envs
-                    for i in range(self.num_envs):
-                        self.episode_reward[i] = 0.
+            # Update episode statistics
+            self.episode_reward += reward
+            if self.episode_length == self.max_episode_length - 1:
+                self.episode_reward_mean = self.episode_reward.sum() / self.num_envs
+                self.episode_reward.zero_()
             self.episode_length += 1
-        self.envs.compute_actor_loss()
-        # save the sim state
-        self.envs.save_state()
 
-        # backward
-        # self.envs.set_next_state_grad(state_grads)  # for critic grad
+        # Compute target values using TD(λ)
+        self.compute_target_values()
+
+        # Convert buffers to tensors
+        values_tensor = torch.stack(values_buffer)
+        log_probs_tensor = torch.stack(log_probs_buffer)
+        entropies_tensor = torch.stack(entropies_buffer)
+
+        # Compute advantages
+
+        advantages = self.target_values[self.episode_length-self.steps_num:self.episode_length, ...] - values_tensor
+        advantages = advantages.unsqueeze(-1)
+        # Compute actor loss
+        actor_loss = -(advantages.detach() * log_probs_tensor).mean()
+        avg_entropy = entropies_tensor.mean()
+
+        # Include entropy regularization
+        actor_loss -= entropy_coef * avg_entropy
+
+        # Compute action gradients if needed
+        self.envs.compute_actor_loss()
+        self.envs.save_state()
         self.envs.compute_actor_loss_grad()
 
         for i in range(self.steps_num - 1, -1, -1):
             with torch.no_grad():
-                actions_clone = actions[i].clone().detach().cpu().numpy()
-            self.envs.step_grad(actions_clone)
+                action_cpu = actions[i].clone().detach().cpu().numpy()
+            self.envs.step_grad(action_cpu)
 
-        action_grads = self.envs.get_action_grad([self.episode_length, self.episode_length - self.steps_num])[:, 0:-1, :]
+        action_grads = self.envs.get_action_grad([self.steps_num, 0])
+        action_grads = torch.tensor(action_grads / (self.steps_num * self.num_envs), dtype=torch.float32).to(self.device)
+        action_grads = action_grads[:, :-1, :]  # Adjust shape if necessary
+        action_grads = action_grads.permute(1, 0, 2)  # Match the shape of actions
 
-        # print(actions[-1, 0, :])
-        # print(action_grads[0, -1, :])
-        # 定义一个阈值，设为 1
-        # max_norm = 0.001
-        #
-        # # 计算每个梯度向量的 2-norm
-        # total_norm = np.linalg.norm(action_grads, axis=-1, keepdims=True)
-        #
-        # # 计算裁减系数
-        # clip_coef = np.where(total_norm > max_norm, max_norm / (total_norm + 1e-6), 1.0)
-        #
-        # # 裁减梯度
-        # clipped_action_grads = action_grads * clip_coef
-
-        if torch.isnan(torch.tensor(action_grads, dtype=torch.float32).to(self.device).permute(1, 0, 2)).any():
-            print("The tensor contains NaN values")
-            action_grads = np.zeros_like(action_grads)
+        # Handle NaN values in action_grads
+        if torch.isnan(action_grads).any():
+            print("The tensor contains NaN values in action_grads")
+            action_grads = torch.nan_to_num(action_grads, nan=0.0, posinf=0.0, neginf=0.0)
 
         self.actor_loss = actor_loss.detach().cpu().item()
-        actor_loss /= self.num_envs
-        return actions, torch.tensor(action_grads, dtype=torch.float32).to(self.device).permute(1, 0, 2), actor_loss
+
+        return actions, action_grads, actor_loss
 
     @torch.no_grad()
     def compute_target_values(self):
         if self.critic_method == 'one-step':
-            self.target_values = self.rew_buf + self.gamma * self.next_values
+            self.target_values = self.rew_buf + self.gamma * self.next_values * (1 - self.done_mask)
         elif self.critic_method == 'td-lambda':
             Ai = torch.zeros(self.num_envs, dtype=torch.float32, device=self.device)
             Bi = torch.zeros(self.num_envs, dtype=torch.float32, device=self.device)
@@ -408,6 +403,8 @@ class SHACPolicy:
     def get_dataset(self):
         self.time_report.start_timer("prepare critic dataset")
         with torch.no_grad():
+            self.done_mask[:-1] = 0
+            self.done_mask[-1] = 1
             self.compute_target_values()
             dataset = CriticDataset(self.batch_size,
                                     {"gridsensor2d": self.obs_buf_grid2D, "gridsensor3d": self.obs_buf_grid3D, "vector_obs": self.obs_buf_vector},

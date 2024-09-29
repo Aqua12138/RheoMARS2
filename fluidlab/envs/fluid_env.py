@@ -209,9 +209,9 @@ class FluidEnv(gym.Env):
 
         assert self.t <= self.horizon
         if self.t == self.horizon:
-            done = True
+            done = np.array(1)
         else:
-            done = False
+            done = np.array(0)
 
         if np.isnan(reward):
             reward = -1000

@@ -79,7 +79,7 @@ class SHACLoss(Loss):
         self.dist_norm.grad.fill(0)
         self.rew.grad.fill(0)
         self.rew_acc.grad.fill(0)
-        self.actor_loss.grad.fill(0)
+        self.actor_loss.grad.fill(1)
 
     def load_target(self, path):
         self.targets = pkl.load(open(path, 'rb'))
@@ -156,7 +156,7 @@ class SHACLoss(Loss):
         self.rew_acc.grad.fill(0)
 
         self.actor_loss.fill(0)
-        self.actor_loss.grad.fill(0)
+        self.actor_loss.grad.fill(1)
 
     def init_step_loss(self, s, f):
         self.compute_grid_mass(f)
@@ -336,6 +336,6 @@ class SHACLoss(Loss):
         self._last_loss = loss
 
         loss_info = {}
-        loss_info['reward'] = reward * 1000
+        loss_info['reward'] = reward
         loss_info['loss'] = loss
         return loss_info

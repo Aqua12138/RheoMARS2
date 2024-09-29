@@ -13,10 +13,10 @@ import copy
 
 class AccumulationEnv(FluidEnv):
     def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics"):
-        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=320)
+        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=640)
         self.action_range = np.array([-0.007, 0.007])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
-        self.max_episode_length = 320
+        self.max_episode_length = 640
 
     def setup_agent(self):
         agent_cfg = CfgNode(new_allowed=True)
