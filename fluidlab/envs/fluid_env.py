@@ -209,7 +209,7 @@ class FluidEnv(gym.Env):
 
         assert self.t <= self.horizon
         if self.t == self.horizon:
-            done = np.array(1)
+            done = np.array(0)
         else:
             done = np.array(0)
 

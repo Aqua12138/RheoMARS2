@@ -13,7 +13,7 @@ import copy
 
 class AccumulationEnv(FluidEnv):
     def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics"):
-        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=640)
+        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=128)
         self.action_range = np.array([-0.007, 0.007])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
         self.max_episode_length = 640
@@ -109,16 +109,16 @@ class AccumulationEnv(FluidEnv):
 
         assert self.t <= self.horizon
         if self.t == self.horizon:
-            done = True
+            done = np.array(1)
         else:
-            done = False
+            done = np.array(0)
 
         if np.isnan(reward):
             reward = -1000
             done = True
 
         info = dict()
-        self.render()
+        # self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):
@@ -143,13 +143,12 @@ class AccumulationEnv(FluidEnv):
         self.rheo_pos += delta_pos
         self._init_state['state']['x'] += delta_pos
 
-        agent_lower = (0.5, 0.2, 0.7)
-        agent_upper = (0.5, 0.2, 0.7)
-        random_pos = np.random.uniform(agent_lower, agent_upper)
-        self._init_state['state']['agent'][0][0:3] = random_pos
+        agent_lower = (0.4, 0.2, 0.6)
+        agent_upper = (0.6, 0.3, 0.8)
+        self.random_pos = np.random.uniform(agent_lower, agent_upper)
+        self._init_state['state']['agent'][0][0:3] = self.random_pos
 
-
-        target_num = 0
+        target_num = np.random.randint(0, 100)
         target_pos = pkl.load(open(self.target_file, 'rb'))['statics'][target_num][0]
         self.taichi_env.statics.statics[0].set_pos(
             position=np.array(target_pos),
@@ -166,6 +165,18 @@ class AccumulationEnv(FluidEnv):
         self.taichi_env.reset_grad()
         info = {}
         return self._get_obs(), info
+
+    def reset_grad(self):
+        self._current_state["grad_enabled"] = True
+        agent_lower = (0.4, 0.2, 0.6)
+        agent_upper = (0.6, 0.3, 0.8)
+        self.random_pos = np.random.uniform(agent_lower, agent_upper)
+        self._current_state['state']['agent'][0] = self._init_state['state']['agent'][0]
+        self._current_state['state']['agent'][0][0:3] = self.random_pos
+
+        self.taichi_env.set_state(self._current_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
+        self.taichi_env.reset_grad()
+        return self._get_obs()
 
     def collect_data_reset(self):
         lower = (0.2, 0.32, 0.25)

@@ -314,7 +314,7 @@ class SHACPolicy:
 
         self.time_report.start_timer("forward and backward simulation")
         actions, action_grads, actor_loss = self.compute_actor_loss()
-        actor_loss.backward(retain_graph=True)
+        # actor_loss.backward(retain_graph=True)
         actions.backward(action_grads)
 
         self.time_report.end_timer("forward and backward simulation")

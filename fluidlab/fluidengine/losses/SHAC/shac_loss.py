@@ -174,6 +174,7 @@ class SHACLoss(Loss):
         self.compute_density_loss_kernel(s)
         self.compute_sdf_loss_kernel(s)
         self.compute_contact_loss(s, f)
+        # print(self.contact_loss[s])
 
         self.sum_up_loss_kernel(s)
 

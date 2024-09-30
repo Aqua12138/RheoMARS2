@@ -8,7 +8,7 @@ params:
     weight:
       density: 1
       sdf: 100
-      contact: 0
+      contact: 0.01
       is_soft_contact: False
 
   config:
