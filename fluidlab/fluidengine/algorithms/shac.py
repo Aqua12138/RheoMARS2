@@ -169,14 +169,6 @@ class SHACPolicy:
     # ----------------- train -----------------
 
     def compute_actor_loss(self):
-        # Hyperparameters
-        entropy_coef = 0.01  # Entropy coefficient for regularization, adjust as needed
-
-        # Initialize buffers
-        log_probs_buffer = []
-        entropies_buffer = []
-        values_buffer = []
-
         actions = torch.zeros((self.steps_num, self.num_envs, *self.num_actions), dtype=torch.float32,
                               device=self.device)
 
@@ -202,20 +194,11 @@ class SHACPolicy:
             grid_sensor2d = obs["gridsensor2d"]
             grid_sensor3d = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action, log_prob, entropy, _ = self.actor.get_action_and_stats([grid_sensor2d, grid_sensor3d, vector_obs])
-
-            action = action[0]
-            log_prob = log_prob[0]
-            entropy = entropy[0]
-
+            action = self.actor([grid_sensor2d, grid_sensor3d, vector_obs])[4]
             actions[i] = action
-            log_probs_buffer.append(log_prob)
-            entropies_buffer.append(entropy)
-
             # Get value estimate from Critic
             obs_list = [[grid_sensor2d, grid_sensor3d, vector_obs]]
             value = self.critic.critic_pass(obs_list)[0]['extrinsic']
-            values_buffer.append(value)
 
             # Interact with the environment
             with torch.no_grad():
@@ -235,25 +218,6 @@ class SHACPolicy:
                 self.episode_reward_mean = self.episode_reward.sum() / self.num_envs
                 self.episode_reward.zero_()
             self.episode_length += 1
-
-        # Compute target values using TD(λ)
-        self.compute_target_values()
-
-        # Convert buffers to tensors
-        values_tensor = torch.stack(values_buffer)
-        log_probs_tensor = torch.stack(log_probs_buffer)
-        entropies_tensor = torch.stack(entropies_buffer)
-
-        # Compute advantages
-
-        advantages = self.target_values[self.episode_length-self.steps_num:self.episode_length, ...] - values_tensor
-        advantages = advantages.unsqueeze(-1)
-        # Compute actor loss
-        actor_loss = -(advantages.detach() * log_probs_tensor).mean()
-        avg_entropy = entropies_tensor.mean()
-
-        # Include entropy regularization
-        actor_loss -= entropy_coef * avg_entropy
 
         # Compute action gradients if needed
         self.envs.compute_actor_loss()
@@ -275,9 +239,7 @@ class SHACPolicy:
             print("The tensor contains NaN values in action_grads")
             action_grads = torch.nan_to_num(action_grads, nan=0.0, posinf=0.0, neginf=0.0)
 
-        self.actor_loss = actor_loss.detach().cpu().item()
-
-        return actions, action_grads, actor_loss
+        return actions, action_grads
 
     @torch.no_grad()
     def compute_target_values(self):
@@ -313,8 +275,8 @@ class SHACPolicy:
         self.time_report.start_timer("compute actor loss")
 
         self.time_report.start_timer("forward and backward simulation")
-        actions, action_grads, actor_loss = self.compute_actor_loss()
-        # actor_loss.backward(retain_graph=True)
+        actions, action_grads = self.compute_actor_loss()
+
         actions.backward(action_grads)
 
         self.time_report.end_timer("forward and backward simulation")

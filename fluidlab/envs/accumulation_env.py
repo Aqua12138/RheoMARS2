@@ -46,9 +46,9 @@ class AccumulationEnv(FluidEnv):
     def setup_bodies(self):
         self.taichi_env.add_body(
             type='cube',
-            lower=(0.45, 0.30, 0.45),
-            upper=(0.55, 0.34, 0.55),
-            material=VISCOUS_DEMO,
+            lower=(0.45, 0.08, 0.45),
+            upper=(0.55, 0.12, 0.55),
+            material=WATER,
         )
 
     def setup_boundary(self):
@@ -134,14 +134,14 @@ class AccumulationEnv(FluidEnv):
         self.taichi_env.step_grad(action)
     def reset(self):
         # Generate the first random number
-        rheo_lower = (0.5, 0.1, 0.7)
-        rheo_upper = (0.5, 0.1, 0.7)
-        random_pos = np.random.uniform(rheo_lower, rheo_upper)
-
-        rheo_pos = self.rheo_pos
-        delta_pos = random_pos - rheo_pos
-        self.rheo_pos += delta_pos
-        self._init_state['state']['x'] += delta_pos
+        # rheo_lower = (0.5, 0.1, 0.5)
+        # rheo_upper = (0.5, 0.1, 0.5)
+        # random_pos = np.random.uniform(rheo_lower, rheo_upper)
+        #
+        # rheo_pos = self.rheo_pos
+        # delta_pos = random_pos - rheo_pos
+        # self.rheo_pos += delta_pos
+        # self._init_state['state']['x'] += delta_pos
 
         agent_lower = (0.4, 0.2, 0.6)
         agent_upper = (0.6, 0.3, 0.8)
@@ -158,8 +158,8 @@ class AccumulationEnv(FluidEnv):
         self.taichi_env.loss.update_target(target_num)
 
         # random mu
-        # mu = np.random.uniform(0, 100)
-        # self.taichi_env.simulator.update_mu(mu)
+        mu = np.random.uniform(0, 100)
+        self.taichi_env.simulator.update_mu(mu)
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         self.taichi_env.reset_grad()

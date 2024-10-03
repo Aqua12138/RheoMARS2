@@ -174,7 +174,7 @@ LAMDA = {
     ELASTIC_DEMO   : 100.0,
     PLASTIC_DEMO   : 277.78,
     ICECREAM       : 277.78,
-    ICECREAM1       : 277.78,
+    ICECREAM1      : 277.78,
     RIGID          : 277.78,
     RIGID_HEAVY    : 277.78,
     RIGID_LIGHT    : 277.78,
