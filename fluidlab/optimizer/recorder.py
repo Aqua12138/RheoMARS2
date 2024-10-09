@@ -215,8 +215,8 @@ class Recorder:
 
 
     def eval(self, model_path):
-        policy = torch.load(model_path)[0]
-        # policy = torch.load(model_path)["Policy"]
+        # policy = torch.load(model_path)[0]
+        policy = torch.load(model_path)["Policy"]
         policy.eval()
         taichi_env = self.env.taichi_env
         np_total_reward = []
