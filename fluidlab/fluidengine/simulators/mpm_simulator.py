@@ -151,6 +151,9 @@ class MPMSimulator:
         mu = np.array([MU for _ in range(self.n_particles)]).astype(DTYPE_NP)
         self.update_mu_kernel(mu)
 
+    def update_rho(self, RHO):
+        rho = np.array([RHO for _ in range(self.n_particles)]).astype(DTYPE_NP)
+        self.update_rho_kernel(rho)
     @ti.kernel
     def init_particles_kernel(
             self,
@@ -185,7 +188,16 @@ class MPMSimulator:
 
         ):
         for i in range(self.n_particles):
-            self.particles_i[i].mu      = mu[i]
+            self.particles_i[i].mu      = mu[i]\
+
+    @ti.kernel
+    def update_rho_kernel(
+            self,
+            rho      : ti.types.ndarray(),
+
+        ):
+        for i in range(self.n_particles):
+            self.particles_i[i].mass = self.p_vol * rho[i]
 
 
     def init_bodies(self, mat_cls, body_id, bodies):

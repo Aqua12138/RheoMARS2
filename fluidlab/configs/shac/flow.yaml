@@ -1,0 +1,34 @@
+params:
+  env:
+    name: Flow-v0
+    seed: 567
+  loss:
+    name: SHACLoss
+    target_file: Flow.pkl
+    weight:
+      density: 21
+      sdf: 21
+      contact: 0
+      is_soft_contact: False
+
+  config:
+    actor_learning_rate: 5e-5 # adam
+    critic_learning_rate: 1e-4 # adam
+    lr_schedule: constant # ['constant', 'linear']
+    target_critic_alpha: 0.2
+    critic_iterations: 32
+    critic_method: td-lambda # ['td-lambda', 'one-step']
+    lam: 0.99
+    num_batch: 1
+    gamma: 0.99
+    betas: [0.9, 0.999] # adam
+    max_epochs: 2000
+    steps_num: 224
+    grad_norm: 1
+    truncate_grads: True
+    num_actors: 2
+    save_interval: 400
+    device: cuda:0
+
+
+

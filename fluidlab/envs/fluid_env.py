@@ -209,16 +209,16 @@ class FluidEnv(gym.Env):
 
         assert self.t <= self.horizon
         if self.t == self.horizon:
-            done = np.array(0)
+            done = True
         else:
-            done = np.array(0)
+            done = False
 
         if np.isnan(reward):
             reward = -1000
             done = True
 
         info = dict()
-        self.render()
+        # self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):
