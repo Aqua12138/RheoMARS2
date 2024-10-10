@@ -13,7 +13,7 @@ import copy
 
 class ShearEnv(FluidEnv):
     def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics"):
-        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=128)
+        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=640)
         self.action_range = np.array([-0.007, 0.007])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
         self.max_episode_length = 640
@@ -48,7 +48,7 @@ class ShearEnv(FluidEnv):
             type='cube',
             lower=(0.45, 0.08, 0.45),
             upper=(0.55, 0.12, 0.55),
-            material=WATER,
+            material=ICECREAM,
         )
 
     def setup_boundary(self):
@@ -118,7 +118,7 @@ class ShearEnv(FluidEnv):
             done = True
 
         info = dict()
-        # self.render()
+        self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):
@@ -158,11 +158,15 @@ class ShearEnv(FluidEnv):
         self.taichi_env.loss.update_target(target_num)
 
         # random mu
-        mu = np.random.uniform(0, 100)
+        mu = np.random.uniform(400, 500) # (0, 20) (20, 100) (400, 500)
         self.taichi_env.simulator.update_mu(mu)
 
-        rho = np.random.uniform(0.5, 5)
+        rho = np.random.uniform(0.3, 2)
         self.taichi_env.simulator.update_rho(rho)
+
+        # random firction
+        friction = np.random.uniform(0.5, 0.5)  # (0.4, 0.5) (0.5, 1) (0.3, 0.7)
+        self.taichi_env.statics.statics[1].update_friction(friction)
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         self.taichi_env.reset_grad()

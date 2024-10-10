@@ -48,7 +48,7 @@ class CompressionEnv(FluidEnv):
             type='cube',
             lower=(0.45, 0.08, 0.45),
             upper=(0.55, 0.2, 0.55),
-            material=WATER,
+            material=ICECREAM,
         )
 
     def setup_boundary(self):
@@ -118,7 +118,7 @@ class CompressionEnv(FluidEnv):
             done = True
 
         info = dict()
-        self.render()
+        # self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):
@@ -159,8 +159,8 @@ class CompressionEnv(FluidEnv):
         self.taichi_env.loss.update_target(target_num)
 
         # random mu
-        mu = np.random.uniform(0, 100)
-        self.taichi_env.simulator.update_mu(mu)
+
+
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         self.taichi_env.reset_grad()

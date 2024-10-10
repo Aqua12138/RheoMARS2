@@ -194,7 +194,7 @@ class SHACPolicy:
             grid_sensor2d = obs["gridsensor2d"]
             grid_sensor3d = obs["gridsensor3d"]
             vector_obs = obs["vector_obs"]
-            action = self.actor.get_action_and_stats([grid_sensor2d, grid_sensor3d, vector_obs])[4]
+            action = self.actor([grid_sensor2d, grid_sensor3d, vector_obs])[4]
             actions[i] = action
             # Get value estimate from Critic
             obs_list = [[grid_sensor2d, grid_sensor3d, vector_obs]]

@@ -50,7 +50,7 @@ class FlowEnv(FluidEnv):
             center=(0.5, 0.55, 0.5),
             height=0.07,
             radius=0.04,
-            material=WATER,
+            material=WATER, # WATER | ICECREAM
         )
 
     def setup_boundary(self):
@@ -118,13 +118,17 @@ class FlowEnv(FluidEnv):
         # set_target
         self.taichi_env.loss.update_target(target_num)
 
-        # random mu
-        mu = np.random.uniform(100, 500)
+        # # random mu
+        mu = np.random.uniform(20, 100) # (0, 20) (20, 100) (400, 500)
         self.taichi_env.simulator.update_mu(mu)
-        
-        # 
-        rho = np.random.uniform(0.5, 5)
-        self.taichi_env.simulator.update_mu(rho)
+        #
+        # random rho
+        rho = np.random.uniform(0.3, 2) # (0.3, 2) (0.3, 2) (0.3, 2)
+        self.taichi_env.simulator.update_rho(rho)
+
+        # random firction
+        friction = np.random.uniform(0.3, 0.7) # (0.1, 0.3) (0.3, 0.7) (0.3, 0.7)
+        self.agent.effectors[0].mesh.update_friction(friction)
 
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)

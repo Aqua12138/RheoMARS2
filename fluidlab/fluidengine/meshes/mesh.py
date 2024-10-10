@@ -65,6 +65,9 @@ class Mesh:
         self.sdf_voxels_res = self.sdf_voxels_np.shape[0]
         self.T_mesh_to_voxels_np = sdf_data['T_mesh_to_voxels'].astype(DTYPE_NP)
 
+    def update_friction(self, friction):
+        self.friction = friction
+
     def process_mesh(self):
         self.raw_file_path       = get_raw_mesh_path(self.raw_file)
         self.raw_file_vis_path   = get_raw_mesh_path(self.raw_file_vis)

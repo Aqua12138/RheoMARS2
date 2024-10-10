@@ -5,11 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/fluidlab/configs/ppo/shear.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/configs/macros.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/macros.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/envs/accumulation_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/accumulation_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/compression.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/compression.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/compression_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/compression_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/flow_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/flow_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/shear_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/shear_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/algorithms/shac.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/recorder.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/recorder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/meshes/mesh.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/meshes/mesh.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/policies.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/policies.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +64,7 @@
       <recent name="$PROJECT_DIR$/fluidlab/envs" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.shac_trainer">
+  <component name="RunManager" selected="Python.debug">
     <configuration name="collect_data" type="PythonConfigurationType" factoryName="Python">
       <module name="RheoMARS2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -95,7 +101,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/shac/accumulation.yaml --renderer_type GGUI --debug --perc_type sensor" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/shear.yaml --renderer_type GGUI --debug --perc_type sensor" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
