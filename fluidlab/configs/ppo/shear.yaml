@@ -6,7 +6,7 @@ params:
     name: PPOLoss
     target_file: Shear.pkl
     weight:
-      density: 21
+      density: 0
       sdf: 21
       contact: 0
       is_soft_contact: False

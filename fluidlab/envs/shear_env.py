@@ -49,7 +49,7 @@ class ShearEnv(FluidEnv):
             type='cube',
             lower=(0.45, 0.08, 0.45),
             upper=(0.55, 0.12, 0.55),
-            material=ICECREAM,
+            material=self.material,
         )
 
     def setup_boundary(self):
@@ -119,7 +119,7 @@ class ShearEnv(FluidEnv):
             done = True
 
         info = dict()
-        # self.render()
+        self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):
@@ -159,10 +159,10 @@ class ShearEnv(FluidEnv):
         self.taichi_env.loss.update_target(target_num)
 
         # random mu
-        mu = np.random.uniform(400, 500) # (0, 20) (20, 100) (400, 500)
+        mu = np.random.uniform(RANDOM_MU[self.material][0], RANDOM_MU[self.material][1]) # (0, 20) (20, 100) (400, 500)
         self.taichi_env.simulator.update_mu(mu)
 
-        rho = np.random.uniform(0.3, 2)
+        rho = np.random.uniform(RANDOM_RHO[self.material][0], RANDOM_RHO[self.material][1])
         self.taichi_env.simulator.update_rho(rho)
 
         # # random firction

@@ -6,6 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/macros.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/macros.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/ppo/flow.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/ppo/flow.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/ppo/shear.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/ppo/shear.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/flow.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/flow.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/shear.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/shear.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/flow_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/flow_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/shear_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/shear_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/taichi_env.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -266,7 +273,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/ppo/shear.yaml --renderer_type GGUI --rl ppo --exp_name=shear --perc_type sensor --pre_train_model $USER_HOME$/文档/pre_train_model/direct.pth --horizon 640 --material INVISCID_DEMO" />
+      <option name="PARAMETERS" value="--cfg_file configs/shac/shear.yaml --renderer_type GGUI --rl shac --exp_name=shear --perc_type sensor --pre_train_model $USER_HOME$/文档/pre_train_model/direct.pth --horizon 128 --material VISCOUS_DEMO" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -780,6 +787,11 @@
           <url>file://$PROJECT_DIR$/fluidlab/envs/shear_env.py</url>
           <line>15</line>
           <option name="timeStamp" value="540" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fluidlab/envs/shear_env.py</url>
+          <line>161</line>
+          <option name="timeStamp" value="541" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

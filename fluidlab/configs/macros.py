@@ -209,7 +209,7 @@ RANDOM_MU = {
 RANDOM_RHO = {
     INVISCID_DEMO: (0.5, 2),
     VISCOUS_DEMO: (1, 5),
-    ICECREAM: (400, 500),
+    ICECREAM: (0.3, 3),
 }
 
 
