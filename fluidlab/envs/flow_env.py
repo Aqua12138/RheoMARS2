@@ -12,11 +12,12 @@ import pickle as pkl
 import copy
 
 class FlowEnv(FluidEnv):
-    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics"):
-        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=224)
+    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=224, material=WATER):
+        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=horizon, material=material)
         self.action_range = np.array([-0.007, 0.007])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
         self.max_episode_length = 224
+
 
     def setup_agent(self):
         agent_cfg = CfgNode(new_allowed=True)
@@ -118,7 +119,7 @@ class FlowEnv(FluidEnv):
         # set_target
         self.taichi_env.loss.update_target(target_num)
 
-        # # random mu
+        # random mu
         mu = np.random.uniform(20, 100) # (0, 20) (20, 100) (400, 500)
         self.taichi_env.simulator.update_mu(mu)
         #
@@ -126,9 +127,9 @@ class FlowEnv(FluidEnv):
         rho = np.random.uniform(0.3, 2) # (0.3, 2) (0.3, 2) (0.3, 2)
         self.taichi_env.simulator.update_rho(rho)
 
-        # random firction
-        friction = np.random.uniform(0.3, 0.7) # (0.1, 0.3) (0.3, 0.7) (0.3, 0.7)
-        self.agent.effectors[0].mesh.update_friction(friction)
+        # # random firction
+        # friction = np.random.uniform(0.3, 0.7) # (0.1, 0.3) (0.3, 0.7) (0.3, 0.7)
+        # self.agent.effectors[0].mesh.update_friction(friction)
 
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)

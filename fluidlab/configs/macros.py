@@ -133,8 +133,8 @@ FRICTION = {
     TANK    : 0.5,
     BOWL    : 5.0,
     LADDLE  : 0.1,
-    CONE    : 8.0,
-    BOTTLE  : 0.1,
+    CONE    : 0.5,
+    BOTTLE  : 0.3,
     PILLAR  : 0.0,
     STIRRER : 8.0,
     PLATE   : 0.1,
@@ -199,6 +199,19 @@ RHO = {
     RIGID_HEAVY    : 10.0,
     RIGID_LIGHT    : 0.5,
 }
+
+RANDOM_MU = {
+    INVISCID_DEMO: (0, 20),
+    VISCOUS_DEMO: (20, 100),
+    ICECREAM: (400, 500),
+}
+
+RANDOM_RHO = {
+    INVISCID_DEMO: (0.5, 2),
+    VISCOUS_DEMO: (1, 5),
+    ICECREAM: (400, 500),
+}
+
 
 ############ dtype #############
 import numpy as np

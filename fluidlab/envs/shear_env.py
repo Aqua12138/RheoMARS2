@@ -12,11 +12,12 @@ import pickle as pkl
 import copy
 
 class ShearEnv(FluidEnv):
-    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics"):
-        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=640)
+    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=224, material=WATER):
+        super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=horizon, material=material)
         self.action_range = np.array([-0.007, 0.007])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
         self.max_episode_length = 640
+
 
     def setup_agent(self):
         agent_cfg = CfgNode(new_allowed=True)
@@ -164,9 +165,9 @@ class ShearEnv(FluidEnv):
         rho = np.random.uniform(0.3, 2)
         self.taichi_env.simulator.update_rho(rho)
 
-        # random firction
-        friction = np.random.uniform(0.5, 0.5)  # (0.4, 0.5) (0.5, 1) (0.3, 0.7)
-        self.taichi_env.statics.statics[1].update_friction(friction)
+        # # random firction
+        # friction = np.random.uniform(0.5, 0.5)  # (0.4, 0.5) (0.5, 1) (0.3, 0.7)
+        # self.taichi_env.statics.statics[1].update_friction(friction)
 
         self.taichi_env.set_state(self._init_state['state'], grad_enabled=self.grad_enabled, t=0, f_global=0)
         self.taichi_env.reset_grad()

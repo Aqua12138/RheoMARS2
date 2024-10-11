@@ -15,7 +15,7 @@ class FluidEnv(gym.Env):
     '''
     Base env class.
     '''    
-    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=128):
+    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=128, material='WATER'):
         if seed is not None:
             self.seed(seed)
 
@@ -31,6 +31,7 @@ class FluidEnv(gym.Env):
         self.Loss                  = getattr(losses, loss_cfg.name, None)
         self.weight = dict(loss_cfg.weight)
         self.loss                  = loss
+        self.material = globals()[material]
 
         # create a taichi env
         self.taichi_env = TaichiEnv(
@@ -76,14 +77,9 @@ class FluidEnv(gym.Env):
             type='cube',
             lower=(0.2, 0.2, 0.2),
             upper=(0.4, 0.4, 0.4),
-            material=WATER,
+            material=self.material,
         )
-        self.taichi_env.add_body(
-            type='ball',
-            center=(0.6, 0.3, 0.6),
-            radius=0.1,
-            material=WATER,
-        )
+
 
     def setup_smoke_field(self):
         pass

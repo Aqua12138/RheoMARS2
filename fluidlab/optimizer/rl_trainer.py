@@ -100,7 +100,7 @@ class CustomActor(nn.Module):
     def __init__(self, model, action_shape):
         super().__init__()
         self.model = model  # 已有的模型
-        self.log_std = nn.Parameter(torch.zeros(action_shape))
+        self.log_std = nn.Parameter(torch.full(action_shape, -1.0))
     def forward(self, obs, state=None, info={}):
         # 将obs转换为obs_list
         obs_list = [obs.gridsensor2d, obs.gridsensor3d, obs.vector_obs]
@@ -123,7 +123,7 @@ class CustomCritic(nn.Module):
 class PPO_trainer:
     def __init__(self, cfg, args):
         self.cfg = cfg
-        train_envs = DummyVectorEnv([lambda: gym.make(cfg.params.env.name, loss=True, loss_cfg=cfg.params.loss, renderer_type=args.renderer_type, perc_type="sensor") for _ in range(self.cfg.params.config.num_envs)])
+        train_envs = DummyVectorEnv([lambda: gym.make(cfg.params.env.name, loss=True, loss_cfg=cfg.params.loss, renderer_type=args.renderer_type, perc_type="sensor", horizon=args.horizon, material=args.material) for _ in range(self.cfg.params.config.num_envs)])
         assert isinstance(train_envs.observation_space[0], gym.spaces.Dict)
         assert isinstance(train_envs.action_space[0], gym.spaces.Box)
 
@@ -216,7 +216,7 @@ class PPO_trainer:
 
 class SHAC_trainer:
     def __init__(self, cfg, args):
-        train_envs = MyDummyVectorEnv([lambda: gym.make(cfg.params.env.name, seed=cfg.params.env.seed+i, loss=True, loss_cfg=cfg.params.loss, renderer_type=args.renderer_type, perc_type="sensor") for i in range(cfg.params.config.num_actors)])
+        train_envs = MyDummyVectorEnv([lambda: gym.make(cfg.params.env.name, loss=True, loss_cfg=cfg.params.loss, renderer_type=args.renderer_type, perc_type="sensor", horizon=args.horizon, material=args.material) for i in range(cfg.params.config.num_actors)])
 
         assert isinstance(train_envs.observation_space[0], gym.spaces.Dict)
         assert isinstance(train_envs.action_space[0], gym.spaces.Box)  # for mypy

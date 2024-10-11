@@ -15,12 +15,12 @@ params:
     deterministic_eval: True
     action_scaling: False
     ReplayBufferSize: 20000
-    max_epochs: 60
-    step_per_epochs: 672
-    repeat_per_collect: 3
-    episode_per_test: 10
+    max_epochs: 200
+    step_per_epochs: 448
+    repeat_per_collect: 2
+    episode_per_test: 5
     batch_size: 224
-    step_per_collect: 672
+    step_per_collect: 448
     num_envs: 2
     lr: 0.00005
     betas: [0.9, 0.999]
