@@ -132,7 +132,7 @@ class PPO_trainer:
             state_shape.append(space.shape)
         action_space = train_envs.action_space[0]
         self.action_shape = action_space.shape
-        self.build_actor_critic(model_path=args.pre_train_model, intial_model=args.intial_model)
+        self.build_actor_critic(model_path=args.pre_train_model, initial_model=args.initial_model)
 
         self.policy = PPOPolicy(
             self.actor,
@@ -196,10 +196,10 @@ class PPO_trainer:
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)  # 将偏置初始化为0
 
-    def build_actor_critic(self, model_path, intial_model=False):
+    def build_actor_critic(self, model_path, initial_model=False):
         actor_model = torch.load(model_path)["Policy"]
         critic_model = torch.load(model_path)['Optimizer:critic']
-        if intial_model:
+        if initial_model:
             # 对比实验
             self.initialize_weights(actor_model)
             self.initialize_weights(critic_model)
@@ -226,7 +226,7 @@ class SHAC_trainer:
             state_shape.append(space.shape)
         action_shape = train_envs.action_space[0].shape
 
-        self.build_actor_critic(model_path=args.pre_train_model, intial_model=args.intial_model)
+        self.build_actor_critic(model_path=args.pre_train_model, initial_model=args.initial_model)
         # self._init_actor_critic()
 
         self.policy = SHACPolicy(
@@ -288,11 +288,11 @@ class SHAC_trainer:
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)  # 将偏置初始化为0
 
-    def build_actor_critic(self, model_path, intial_model=False):
+    def build_actor_critic(self, model_path, initial_model=False):
         self.actor = torch.load(model_path)["Policy"]
         self.critic = torch.load(model_path)['Optimizer:critic']
 
-        if intial_model:
+        if initial_model:
             # 对比实验
             self.initialize_weights(self.actor)
             self.initialize_weights(self.critic)
