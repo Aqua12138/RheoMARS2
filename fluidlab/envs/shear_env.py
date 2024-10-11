@@ -12,7 +12,7 @@ import pickle as pkl
 import copy
 
 class ShearEnv(FluidEnv):
-    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=224, material=WATER):
+    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=224, material='WATER'):
         super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=horizon, material=material)
         self.action_range = np.array([-0.007, 0.007])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
@@ -119,7 +119,7 @@ class ShearEnv(FluidEnv):
             done = True
 
         info = dict()
-        self.render()
+        # self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):
