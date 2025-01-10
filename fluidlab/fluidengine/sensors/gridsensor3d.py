@@ -66,17 +66,35 @@ class GridSensor3D(GridSensor):
     def transform_point_particle(self, s: ti.i32, f:ti.i32):
         # 计算point相对agent位置
         for p in range(self.n_particles):
-            self.particles[s, p].relative_x[0] = self.particle_x[f, p][0] - self.agent.effectors[0].pos[f][0]
-            self.particles[s, p].relative_x[1] = self.particle_x[f, p][1] - self.agent.effectors[0].pos[f][1]
-            self.particles[s, p].relative_x[2] = self.particle_x[f, p][2] - self.agent.effectors[0].pos[f][2]
-
             # 获取四元数数据
             a = self.agent.effectors[0].quat[f][0]
             b = -self.agent.effectors[0].quat[f][1]
             c = -self.agent.effectors[0].quat[f][2]
             d = -self.agent.effectors[0].quat[f][3]
             rotation_matrix = quaternion_to_rotation_matrix(a, b, c, d)
-            self.particles[s, p].rotated_x = rotation_matrix @ self.particles[s, p].relative_x
+
+
+            # 计算从 agent 到原点的平移矩阵 (相对位移)
+            rotation_agent2world = ti.Matrix(
+                [[rotation_matrix[0, 0], rotation_matrix[0, 1], rotation_matrix[0, 2], 0],
+                 [rotation_matrix[1, 0], rotation_matrix[1, 1], rotation_matrix[1, 2], 0],
+                 [rotation_matrix[2, 0], rotation_matrix[2, 1], rotation_matrix[2, 2], 0],
+                 [0.0, 0.0, 0.0, 1.0]])
+
+            translation_agent2world = ti.Matrix(
+                [[1, 0, 0, -self.agent.effectors[0].pos[f][0]],
+                 [0, 1, 0, -self.agent.effectors[0].pos[f][1]],
+                 [0, 0, 1, -self.agent.effectors[0].pos[f][2]],
+                 [0.0, 0.0, 0.0, 1.0]])
+
+            T_agent2world = rotation_agent2world @ translation_agent2world
+
+            particle_homogeneous = ti.Vector([self.particle_x[f, p][0],
+                       self.particle_x[f, p][1],
+                       self.particle_x[f, p][2],
+                       1.0])
+            particles_eye = T_agent2world @ particle_homogeneous
+            self.particles[s, p].rotated_x = particles_eye[0:3]
 
     @ti.kernel
     def transform_point_node(self, s: ti.i32, f: ti.i32):
@@ -84,17 +102,34 @@ class GridSensor3D(GridSensor):
         for n in range(self.n_nodes):
             for i in ti.static(range(self.n_statics)):
                 if self.statics[i].is_collide(self.nodes_x[n]):
-                    self.nodes[s, n].relative_x[0] = self.nodes_x[n][0] - self.agent.effectors[0].pos[f][0]
-                    self.nodes[s, n].relative_x[1] = self.nodes_x[n][1] - self.agent.effectors[0].pos[f][1]
-                    self.nodes[s, n].relative_x[2] = self.nodes_x[n][2] - self.agent.effectors[0].pos[f][2]
-
                     # 获取四元数数据
                     a = self.agent.effectors[0].quat[f][0]
                     b = -self.agent.effectors[0].quat[f][1]
                     c = -self.agent.effectors[0].quat[f][2]
                     d = -self.agent.effectors[0].quat[f][3]
                     rotation_matrix = quaternion_to_rotation_matrix(a, b, c, d)
-                    self.nodes[s, n].rotated_x = rotation_matrix @ self.nodes[s, n].relative_x
+                    # 计算从 agent 到原点的平移矩阵 (相对位移)
+                    # 计算从 agent 到原点的平移矩阵 (相对位移)
+                    rotation_agent2world = ti.Matrix(
+                        [[rotation_matrix[0, 0], rotation_matrix[0, 1], rotation_matrix[0, 2], 0],
+                         [rotation_matrix[1, 0], rotation_matrix[1, 1], rotation_matrix[1, 2], 0],
+                         [rotation_matrix[2, 0], rotation_matrix[2, 1], rotation_matrix[2, 2], 0],
+                         [0.0, 0.0, 0.0, 1.0]])
+
+                    translation_agent2world = ti.Matrix(
+                        [[1, 0, 0, -self.agent.effectors[0].pos[f][0]],
+                         [0, 1, 0, -self.agent.effectors[0].pos[f][1]],
+                         [0, 0, 1, -self.agent.effectors[0].pos[f][2]],
+                         [0.0, 0.0, 0.0, 1.0]])
+
+                    T_agent2world = rotation_agent2world @ translation_agent2world
+
+                    node_homogeneous = ti.Vector([self.nodes_x[n][0],
+                                                      self.nodes_x[n][1],
+                                                      self.nodes_x[n][2],
+                                                      1.0])
+                    nodes_eye = T_agent2world @ node_homogeneous
+                    self.nodes[s, n].rotated_x = nodes_eye[0:3]
                     self.nodes_i[s, n].trigger = 1
                     self.nodes_i[s, n].id = i
 

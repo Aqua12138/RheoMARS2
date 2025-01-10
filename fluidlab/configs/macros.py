@@ -204,12 +204,14 @@ RANDOM_MU = {
     INVISCID_DEMO: (0, 20),
     VISCOUS_DEMO: (20, 100),
     ICECREAM: (400, 500),
+    WATER: (0, 0),
 }
 
 RANDOM_RHO = {
     INVISCID_DEMO: (0.5, 2),
     VISCOUS_DEMO: (1, 5),
     ICECREAM: (0.3, 3),
+    WATER: (1, 1),
 }
 
 

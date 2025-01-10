@@ -10,6 +10,7 @@ from fluidlab.fluidengine import losses
 from fluidlab.utils.misc import *
 from fluidlab.utils import misc
 import copy
+import cv2
 
 class FluidEnv(gym.Env):
     '''
@@ -214,7 +215,7 @@ class FluidEnv(gym.Env):
             done = True
 
         info = dict()
-        # self.render()
+        self.render()
         return obs, reward, done, done, info
 
     def step_grad(self, action):

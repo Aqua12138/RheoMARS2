@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="9b6f98ee-a8d1-469d-a5a7-34c6b406e9ec" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/macros.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/macros.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/configs/shac/flow.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/configs/shac/flow.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/configs/agent_flow.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/configs/agent_flow.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/fluid_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fluidlab/envs/shear_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/envs/shear_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/fluidengine/sensors/gridsensor3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fluidlab/optimizer/recorder.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluidlab/optimizer/recorder.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,15 +37,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;SHAC&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/zhx/Project/RheoMARS2/fluidlab/configs/shac&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "SHAC",
+    "last_opened_file_path": "/home/zhx/Project/RheoMARS_bp/RheoMARS2",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/新建临时文件": [
+      "Python"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/fluidlab/configs/shac" />
@@ -252,6 +263,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RheoMARS2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="shac_trainer" type="PythonConfigurationType" factoryName="Python">
       <module name="RheoMARS2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -266,7 +298,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fluidlab/run.py" />
-      <option name="PARAMETERS" value="--cfg_file configs/shac/shear.yaml --renderer_type GGUI --rl shac --exp_name=shear --perc_type sensor --pre_train_model $USER_HOME$/文档/pre_train_model/direct.pth --horizon 128 --material VISCOUS_DEMO" />
+      <option name="PARAMETERS" value="--cfg_file configs/ppo/flow.yaml --renderer_type GGUI --rl shac --exp_name=real_flow_ppo_test --perc_type sensor --pre_train_model $USER_HOME$/文档/pre_train_model/container.pth --horizon 224 --material INVISCID_DEMO" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -307,7 +339,13 @@
       <item itemvalue="Python.shac_trainer" />
       <item itemvalue="Python.text" />
       <item itemvalue="Python.load_model" />
+      <item itemvalue="Python.scratch" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.scratch" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -426,7 +464,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>101</line>
+          <line>102</line>
           <option name="timeStamp" value="152" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -436,7 +474,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>133</line>
+          <line>134</line>
           <option name="timeStamp" value="160" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -451,12 +489,12 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>146</line>
+          <line>147</line>
           <option name="timeStamp" value="195" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>128</line>
+          <line>129</line>
           <option name="timeStamp" value="197" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -466,7 +504,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>184</line>
+          <line>185</line>
           <option name="timeStamp" value="204" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -551,7 +589,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>191</line>
+          <line>192</line>
           <option name="timeStamp" value="322" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -576,12 +614,12 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>179</line>
+          <line>180</line>
           <option name="timeStamp" value="368" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>233</line>
+          <line>234</line>
           <option name="timeStamp" value="373" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
@@ -748,7 +786,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/fluidlab/envs/fluid_env.py</url>
-          <line>116</line>
+          <line>117</line>
           <option name="timeStamp" value="496" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">

@@ -207,12 +207,8 @@ class Recorder:
                 else:
                     action = None
                 obs, reward, done, done, info = self.env.step(action)
-                cv2.imshow('3d grid sensor', obs["gridsensor2d"].detach().cpu().numpy()[..., 2])
+                cv2.imshow('3d grid sensor', obs["gridsensor3d"].detach().cpu().numpy()[..., 1])
                 cv2.waitKey(1)
-                total_reward += reward
-                print(total_reward)
-
-
 
     def eval(self, model_path):
         # policy = torch.load(model_path)[0]
