@@ -34,8 +34,67 @@ class GridSensor3D(GridSensor):
         self.m_MaxDistance = max_distance
         self.m_MinDistance = min_distance
         self.m_DistanceNormalization = distance_normalization
-        self.M = (self.m_LatAngleNorth + self.m_LatAngleSouth) // self.m_CellArc # gridsensor n
-        self.N = (self.m_LonAngle // self.m_CellArc) * 2  # gridsensor m
+        self.M = int((self.m_LatAngleNorth + self.m_LatAngleSouth) // self.m_CellArc) # gridsensor n
+        self.N = int((self.m_LonAngle * 2) // self.m_CellArc)   # gridsensor m
+
+        self.translation_eye2agent = self.generate_transformation_matrix(axises=['rx', 'ry', 'ty'], value=[20, -90, -0.18])
+
+    def generate_transformation_matrix(self, axises, value):
+        # 初始化齐次变换矩阵为单位矩阵
+        T = ti.Matrix([[1.0, 0.0, 0.0, 0.0],
+                       [0.0, 1.0, 0.0, 0.0],
+                       [0.0, 0.0, 1.0, 0.0],
+                       [0.0, 0.0, 0.0, 1.0]])
+
+        for i, axis in enumerate(axises):
+            # 计算绕x轴旋转矩阵
+            if axis == 'rx':
+                R_x = ti.Matrix([[1.0, 0.0, 0.0, 0.0],
+                                 [0.0, ti.math.cos(np.deg2rad(value[i])), -ti.math.sin(np.deg2rad(value[i])), 0.0],
+                                 [0.0, ti.math.sin(np.deg2rad(value[i])), ti.math.cos(np.deg2rad(value[i])), 0.0],
+                                 [0.0, 0.0, 0.0, 1.0]])
+                T = T @ R_x
+
+            # 计算绕y轴旋转矩阵
+            elif axis == 'ry':
+                R_y = ti.Matrix([[ti.math.cos(np.deg2rad(value[i])), 0.0, ti.math.sin(np.deg2rad(value[i])), 0.0],
+                                 [0.0, 1.0, 0.0, 0.0],
+                                 [-ti.math.sin(np.deg2rad(value[i])), 0.0, ti.math.cos(np.deg2rad(value[i])), 0.0],
+                                 [0.0, 0.0, 0.0, 1.0]])
+                T = T @ R_y
+
+            # 计算绕z轴旋转矩阵
+            elif axis == 'rz':
+                R_z = ti.Matrix([[ti.math.cos(np.deg2rad(value[i])), -ti.math.sin(np.deg2rad(value[i])), 0.0, 0.0],
+                                 [ti.math.sin(np.deg2rad(value[i])), ti.math.cos(np.deg2rad(value[i])), 0.0, 0.0],
+                                 [0.0, 0.0, 1.0, 0.0],
+                                 [0.0, 0.0, 0.0, 1.0]])
+                T = T @ R_z
+
+            elif axis == 'tx':
+                T_x = ti.Matrix([[1.0, 0.0, 0.0, value[i]],
+                                 [0.0, 1.0, 0.0, 0.0],
+                                 [0.0, 0.0, 1.0, 0.0],
+                                 [0.0, 0.0, 0.0, 1.0]])
+                T = T @ T_x
+
+            # 计算绕y轴旋转矩阵
+            elif axis == 'ty':
+                T_y = ti.Matrix([[1.0, 0.0, 0.0, 0.0],
+                                 [0.0, 1.0, 0.0, value[i]],
+                                 [0.0, 0.0, 1.0, 0.0],
+                                 [0.0, 0.0, 0.0, 1.0]])
+                T = T @ T_y
+
+            # 计算绕z轴旋转矩阵
+            elif axis == 'tz':
+                T_z = ti.Matrix([[1.0, 0.0, 0.0, 0.0],
+                                 [0.0, 1.0, 0.0, 0.0],
+                                 [0.0, 0.0, 1.0, value[i]],
+                                 [0.0, 0.0, 0.0, 1.0]])
+                T = T @ T_z
+
+        return T
 
     @property
     def name(self):
@@ -93,8 +152,9 @@ class GridSensor3D(GridSensor):
                        self.particle_x[f, p][1],
                        self.particle_x[f, p][2],
                        1.0])
-            particles_eye = T_agent2world @ particle_homogeneous
+            particles_eye = self.translation_eye2agent @ T_agent2world @ particle_homogeneous
             self.particles[s, p].rotated_x = particles_eye[0:3]
+
 
     @ti.kernel
     def transform_point_node(self, s: ti.i32, f: ti.i32):
@@ -128,7 +188,7 @@ class GridSensor3D(GridSensor):
                                                       self.nodes_x[n][1],
                                                       self.nodes_x[n][2],
                                                       1.0])
-                    nodes_eye = T_agent2world @ node_homogeneous
+                    nodes_eye = self.translation_eye2agent @ T_agent2world @ node_homogeneous
                     self.nodes[s, n].rotated_x = nodes_eye[0:3]
                     self.nodes_i[s, n].trigger = 1
                     self.nodes_i[s, n].id = i
@@ -264,7 +324,7 @@ class GridSensor3D(GridSensor):
         # np.save('/home/zhx/PycharmProjects/draw/image/gridsensor3d.npy', grid_sensor[..., 0:2].detach().cpu().numpy())
         # cv2.imshow('3d grid sensor', grid_sensor.detach().cpu().numpy())
         # cv2.waitKey(1)
-        return grid_sensor[..., :2]
+        return grid_sensor[..., 1:-1]
 
     def clear_grid_sensor(self):
         self.particles.fill(0)

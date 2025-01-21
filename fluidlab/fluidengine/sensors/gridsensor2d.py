@@ -96,7 +96,7 @@ class GridSensor2D(GridSensor):
         grid_sensor = torch.zeros((self.M, self.N, self.n_bodies+1+self.n_statics), dtype=torch.float32, device=self.device)
         self.get_sensor_data_kernel(self.sim.cur_step_global, grid_sensor)
 
-        return grid_sensor[..., :3]
+        return grid_sensor[..., 1:-1]
 
 
     def clear_grid_sensor(self):

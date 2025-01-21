@@ -198,7 +198,7 @@ class SHACPolicy:
             actions[i] = action
             # Get value estimate from Critic
             obs_list = [[grid_sensor2d, grid_sensor3d, vector_obs]]
-            value = self.critic.critic_pass(obs_list)[0]['extrinsic']
+            # value = self.critic.critic_pass(obs_list)[0]['extrinsic']
 
             # Interact with the environment
             with torch.no_grad():

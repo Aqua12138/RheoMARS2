@@ -134,7 +134,7 @@ FRICTION = {
     BOWL    : 5.0,
     LADDLE  : 0.1,
     CONE    : 0.5,
-    BOTTLE  : 0.3,
+    BOTTLE  : 0.2,
     PILLAR  : 0.0,
     STIRRER : 8.0,
     PLATE   : 0.1,
@@ -211,7 +211,7 @@ RANDOM_RHO = {
     INVISCID_DEMO: (0.5, 2),
     VISCOUS_DEMO: (1, 5),
     ICECREAM: (0.3, 3),
-    WATER: (1, 1),
+    WATER: (3, 3),
 }
 
 

@@ -1,7 +1,7 @@
 import torch
 import taichi as ti
 import numpy as np
-from fluidlab.utils.geom import qmul, w2quat
+from fluidlab.utils.geom import qmul, w2quat, quat2w
 from fluidlab.utils.config import make_cls_config
 from fluidlab.utils.misc import *
 from fluidlab.fluidengine.boundaries import create_boundary
@@ -58,6 +58,8 @@ class Effector:
         self.latest_pos = ti.Vector.field(3, dtype=ti.f32, shape=(1))
 
         self.init_ckpt()
+
+        self.angle_thresholds = ti.Vector([5.0, 5.0, 120.0])  # 限制阈值
 
     def setup_boundary(self, **kwargs):
         self.boundary = create_boundary(**kwargs)
@@ -158,7 +160,16 @@ class Effector:
     def move_kernel(self, f: ti.i32):
         self.pos[f+1] = self.boundary.impose_x(self.pos[f] + self.v[f])
         # rotate in world coordinates about itself.
-        self.quat[f+1] = qmul(w2quat(self.w[f], DTYPE_TI), self.quat[f])
+        euler = quat2w(self.quat[f])
+        w = self.w[f]
+        # 遍历每个轴的角度，并进行限制
+        for i in ti.static(range(3)):
+            if euler[i] >= self.angle_thresholds[i]:
+                w[i] = ti.min(0, w[i])
+            if euler[i] <= -self.angle_thresholds[i]:
+                w[i] = ti.max(0, w[i])
+
+        self.quat[f + 1] = qmul(w2quat(w, DTYPE_TI), self.quat[f])
 
     # state set and copy ...
     @ti.func

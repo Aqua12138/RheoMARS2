@@ -28,6 +28,20 @@ def w2quat(axis_angle, dtype):
     return out
 
 @ti.func
+def quat2w(quat):
+    """
+    四元数转换为欧拉角 (Roll, Pitch, Yaw) 单位为度
+    :param quat: 四元数 [x, y, z, w]
+    :return: 欧拉角 [roll, pitch, yaw]
+    """
+    w, x, y, z = quat
+    roll = ti.atan2(2.0 * (w * x + y * z), 1.0 - 2.0 * (x * x + y * y))
+    pitch = ti.asin(2.0 * (w * y - z * x))
+    yaw = ti.atan2(2.0 * (w * z + x * y), 1.0 - 2.0 * (y * y + z * z))
+
+    return ti.Vector([roll, pitch, yaw]) * 180.0 / np.pi  # 转换为度
+
+@ti.func
 def inv_quat(quat):
     return ti.Vector([quat[0], -quat[1], -quat[2], -quat[3]]).normalized()
 

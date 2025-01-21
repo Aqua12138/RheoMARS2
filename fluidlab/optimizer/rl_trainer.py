@@ -237,6 +237,7 @@ class SHAC_trainer:
             critic=self.critic,
             dist_fn=self.dist,
             device=cfg.params.config.device)
+
     def solver(self):
         self.policy.learn()
 
@@ -289,8 +290,10 @@ class SHAC_trainer:
                     nn.init.zeros_(m.bias)  # 将偏置初始化为0
 
     def build_actor_critic(self, model_path, initial_model=False):
-        self.actor = torch.load(model_path)["Policy"]
-        self.critic = torch.load(model_path)['Optimizer:critic']
+        # self.actor = torch.load(model_path)["Policy"]
+        self.actor = torch.load(model_path)[0]
+        # self.critic = torch.load(model_path)['Optimizer:critic']
+        self.critic = torch.load(model_path)[0]
 
         if initial_model:
             # 对比实验

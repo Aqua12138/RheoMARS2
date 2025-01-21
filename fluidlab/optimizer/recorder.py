@@ -211,20 +211,20 @@ class Recorder:
                 cv2.waitKey(1)
 
     def eval(self, model_path):
-        # policy = torch.load(model_path)[0]
-        policy = torch.load(model_path)["Policy"]
+        policy = torch.load(model_path)[0]
+        # policy = torch.load(model_path)["Policy"]
         policy.eval()
         taichi_env = self.env.taichi_env
         np_total_reward = []
         for j in range(10):
             obs, _  = self.env.reset()
-            for i in range(5):
+            for i in range(1):
                 np_reward = []
                 total_reward = 0
                 for i in range(self.env.horizon):
                     if i < self.env.horizon:
                         # action = policy(list(obs.values()))[2][0, :].detach().cpu()
-                        action = policy([obs['gridsensor2d'].unsqueeze(0), obs['gridsensor3d'].unsqueeze(0), obs['vector_obs'].unsqueeze(0)])[2][0, :].detach().cpu()
+                        action = policy([obs['gridsensor2d'].unsqueeze(0), obs['gridsensor3d'].unsqueeze(0), obs['vector_obs'].unsqueeze(0)])[4][0, :].detach().cpu()
                     else:
                         action = None
                     obs, reward, done, done, info = self.env.step(action)

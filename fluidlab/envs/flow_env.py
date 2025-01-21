@@ -12,11 +12,11 @@ import pickle as pkl
 import copy
 
 class FlowEnv(FluidEnv):
-    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=224, material='WATER'):
+    def __init__(self, loss=True, loss_cfg=None, seed=None, renderer_type='GGUI', perc_type="physics", horizon=500, material='WATER'):
         super().__init__(loss, loss_cfg, seed, renderer_type, perc_type, horizon=horizon, material=material)
-        self.action_range = np.array([-0.007, 0.007])
+        self.action_range = np.array([-0.002, 0.002])
         self.rheo_pos = np.array([0.5, 0.32, 0.5])
-        self.max_episode_length = 224
+        self.max_episode_length = 500
 
 
     def setup_agent(self):
@@ -29,7 +29,7 @@ class FlowEnv(FluidEnv):
         self.taichi_env.add_static(
             file='cup.obj',
             file_vis='cup_vis.obj',
-            pos=(0.0, 0.0, 0.0),
+            pos=(0.0, 0.00, 0.0),
             euler=(0.0, 0.0, 0.0),
             scale=(0.2, 0.2, 0.2),
             material=CUP,
@@ -48,8 +48,8 @@ class FlowEnv(FluidEnv):
     def setup_bodies(self):
         self.taichi_env.add_body(
             type='cylinder',
-            center=(0.5, 0.55, 0.5),
-            height=0.07,
+            center=(0.5, 0.65, 0.5),
+            height=0.3,
             radius=0.04,
             material=self.material, # WATER | ICECREAM
         )
@@ -101,8 +101,8 @@ class FlowEnv(FluidEnv):
     def reset(self):
         # Generate the first random number
         target_num = np.random.randint(0, 100)
-        lower = (0.2, 0.4, 0.2)
-        upper = (0.7, 0.7, 0.7)
+        lower = (0.6, 0.4, 0.3)
+        upper = (0.8, 0.6, 0.7)
         random_pos = np.random.uniform(lower, upper)
 
         init_agent_pos = self._init_state['state']['agent'][0][0:3]
@@ -120,11 +120,11 @@ class FlowEnv(FluidEnv):
         self.taichi_env.loss.update_target(target_num)
 
         # random mu
-        mu = np.random.uniform(RANDOM_MU[self.material][0], RANDOM_MU[self.material][1]) # (0, 20) (20, 100) (400, 500)
-        self.taichi_env.simulator.update_mu(mu)
-
-        rho = np.random.uniform(RANDOM_RHO[self.material][0], RANDOM_RHO[self.material][1])
-        self.taichi_env.simulator.update_rho(rho)
+        # mu = np.random.uniform(RANDOM_MU[self.material][0], RANDOM_MU[self.material][1]) # (0, 20) (20, 100) (400, 500)
+        # self.taichi_env.simulator.update_mu(mu)
+        #
+        # rho = np.random.uniform(RANDOM_RHO[self.material][0], RANDOM_RHO[self.material][1])
+        # self.taichi_env.simulator.update_rho(rho)
 
         # # random firction
         # friction = np.random.uniform(0.3, 0.7) # (0.1, 0.3) (0.3, 0.7) (0.3, 0.7)
@@ -137,8 +137,8 @@ class FlowEnv(FluidEnv):
         return self._get_obs(), info
 
     def collect_data_reset(self):
-        lower = (0.4, 0.32, 0.4)
-        upper = (0.6, 0.32, 0.6)
+        lower = (0.2, 0.32, 0.3)
+        upper = (0.5, 0.32, 0.7)
         random_pos = np.random.uniform(lower, upper)
 
         rheo_pos = self.rheo_pos
